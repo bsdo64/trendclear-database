@@ -7,7 +7,9 @@ module.exports = {
     connection: {
       database: 'trendclear_dev',
       user:     'trendclear',
-      password: 'trendclear'
+      password: 'trendclear',
+      host    : '127.0.0.1',
+      charset : 'utf8'
     }
   },
 
