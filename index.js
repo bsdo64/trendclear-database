@@ -11,4 +11,4 @@ const knex = Knex(connection);
 // Give the connection to objection.
 Model.knex(knex);
 
-module.Models = require('./Models/index');
+module.exports.Models = require('./Models/index');
