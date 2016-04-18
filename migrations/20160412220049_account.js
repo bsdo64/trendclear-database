@@ -48,7 +48,10 @@ exports.up = (knex, Promise) => {
     .createTable('tc_user_login_logs', (table) => {
       table.increments('id').primary();
       table.string('type'); // fail, success
-      table.timestamp('created_at');
+      table.string('ip'); 
+      table.string('session_id'); 
+      table.string('token'); 
+      table.timestamp('login_at');
 
       table.integer('user_id').references('tc_users.id');
     })
@@ -56,7 +59,7 @@ exports.up = (knex, Promise) => {
     /**
      * 회원 - 비밀번호 찾기 로그 스키마
      */
-    .createTable('tc_user_find_password_logs', (table) => {
+    .createTable('tc_user_password_find_logs', (table) => {
       table.increments('id').primary();
       table.string('type'); // fail, success
       table.timestamp('created_at');
@@ -86,7 +89,7 @@ exports.up = (knex, Promise) => {
     .createTable('tc_user_roles', (table) => {
       table.increments('id').primary();
 
-      table.integer('user_id').unique().references('tc_users.id');
+      table.integer('user_id').references('tc_users.id');
       table.integer('role_id').references('tc_roles.id');
     })
 
@@ -111,6 +114,8 @@ exports.up = (knex, Promise) => {
     .createTable('tc_badges', (table) => {
       table.increments('id').primary();
       table.string('name');
+      table.string('description_info');
+      table.string('description_require');
       table.string('badge_img');
 
       table.integer('creator_id').references('tc_users.id');
@@ -122,6 +127,7 @@ exports.up = (knex, Promise) => {
      */
     .createTable('tc_user_badges', (table) => {
       table.increments('id').primary();
+      table.timestamp('collected_at');
 
       table.integer('keeper_id').references('tc_users.id');
       table.integer('badge_id').references('tc_badges.id');
@@ -134,6 +140,7 @@ exports.up = (knex, Promise) => {
     .createTable('tc_icons', (table) => {
       table.increments('id').primary();
       table.string('icon_img');
+      table.string('type');   // default, created
       table.timestamp('created_at');
 
       table.integer('creator_id').references('tc_users.id');
@@ -155,7 +162,7 @@ exports.up = (knex, Promise) => {
      * 회원 - trendbox 스키마
      *
      */
-    .createTable('tc_user_trendbox', (table) => {
+    .createTable('tc_user_trendboxes', (table) => {
       table.increments('id').primary();
 
       // function levelUp(N) { return 1.2 * Math.pow(N, 3) - 15 * Math.pow(N, 2) + 100 * N - 140 }
@@ -166,10 +173,8 @@ exports.up = (knex, Promise) => {
 
       table.integer('T').unsigned().defaultTo(0).notNullable();
       table.integer('R').unsigned().defaultTo(0).notNullable();
-      table.integer('E').unsigned().defaultTo(0).notNullable();
 
-      table.integer('icon_id').references('tc_user_having_icons.id');
-      table.integer('tc_user_id').unique().references('tc_users.id');
+      table.integer('user_id').references('tc_users.id');
     })
 
     /**
@@ -186,9 +191,9 @@ exports.up = (knex, Promise) => {
      * skill - property 스키마
      *
      */
-    .createTable('tc_skills_properties', (table) => {
+    .createTable('tc_skill_properties', (table) => {
       table.increments('id').primary();
-      table.string('leveling');
+      table.boolean('leveling');
       table.string('cooltime');
 
       table.integer('skill_id').references('tc_skills.id');
@@ -213,6 +218,7 @@ exports.up = (knex, Promise) => {
     .createTable('tc_user_skill_logs', (table) => {
       table.increments('id').primary();
       table.string('type'); //used, save
+      table.timestamp('typed_at'); //used, save
 
       table.integer('skill_id').references('tc_skills.id');
       table.integer('user_id').references('tc_users.id');
@@ -229,7 +235,6 @@ exports.up = (knex, Promise) => {
       table.integer('reputation').defaultTo(1);
       table.integer('T').defaultTo(1);
       table.integer('R').defaultTo(1);
-      table.integer('E').defaultTo(1);
       table.integer('badge').defaultTo(1);
       table.integer('grade').defaultTo(1);
 
@@ -263,7 +268,6 @@ exports.up = (knex, Promise) => {
       table.integer('reputation').defaultTo(1);
       table.integer('T').defaultTo(1);
       table.integer('R').defaultTo(1);
-      table.integer('E').defaultTo(1);
       table.integer('badge').defaultTo(1);
 
       table.integer('joined_day').defaultTo(1);
@@ -297,7 +301,6 @@ exports.up = (knex, Promise) => {
     .createTable('tc_user_reputation_logs', (table) => {
       table.increments('id').primary();
       table.timestamp('created_at');
-      table.string('action');
 
       table.integer('tc_reputation_definition_id').references('tc_reputation_definitions.id');
       table.integer('tc_user_id').references('tc_users.id');
@@ -309,7 +312,7 @@ exports.up = (knex, Promise) => {
      */
     .createTable('tc_point_definitions', (table) => {
       table.increments('id').primary();
-      table.string('point_type').notNullable(); // T, R, E
+      table.string('point_type').notNullable(); // T, R
       table.string('action_type'); // action_type
       table.string('action');
       table.string('description');
@@ -319,85 +322,92 @@ exports.up = (knex, Promise) => {
     .createTable('tc_user_point_logs', (table) => {
       table.increments('id').primary();
       table.timestamp('created_at');
-      table.string('action');
 
       table.integer('tc_point_definition_id').references('tc_point_definitions.id');
       table.integer('tc_user_id').references('tc_users.id');
     })
 
+    /**
+     * exp - definition 스키마
+     *
+     */
+    .createTable('tc_exp_definitions', (table) => {
+      table.increments('id').primary();
+      table.string('action_type'); // action_type
+      table.string('action');
+      table.string('description');
+      table.integer('exp_value').notNullable();
+    })
+
+    .createTable('tc_user_exp_logs', (table) => {
+      table.increments('id').primary();
+      table.timestamp('created_at');
+
+      table.integer('tc_exp_definition_id').references('tc_exp_definitions.id');
+      table.integer('tc_user_id').references('tc_users.id');
+    })
+
+    /**
+     * Club
+     *
+     *  - Club
+     *    '의류, 자동차, 컴퓨터, 게임, 화장품'
+     *    ㄴ category_group
+     *       의류 - '남성의류, 여성의류, 아동의류, 잡화',
+     *       컴퓨터 - '모니터, CPU, 그래픽카드',
+     *       컴퓨터 - '모니터, CPU, 그래픽카드'
+     *      ㄴ category 
+     *         남성의류 - '상의, 하의, 원피스, 아우터, 트레이닝',
+     *         여성의류 - '상의, 하의, 원피스, 아우터, 트레이닝'
+     *        ㄴ forum
+     *           상의 - '블라우스/니트/셔츠, 티셔츠, 니트/스웨터', 
+     *           하의 - '팬츠/바지, 청바지/진, 스커트/치마'
+     *          ㄴ post : 티셔츠
+     *            ㄴ prefix : '기본, 브이넥, 라운드, 무지, 프린트'
+     */
     .createTable('tc_clubs', (table) => {
       table.increments('id').primary();
-      table.string('name');
-      table.string('url');
+      table.string('title');
+      table.integer('order');
+      table.boolean('using');
       table.string('description');
-
-      table.integer('creator_id').references('tc_users.id');
     })
 
     .createTable('tc_club_category_groups', (table) => {
       table.increments('id').primary();
       table.string('title');
-      table.string('url');
       table.string('order');
       table.string('using');
       table.string('description');
-
-      table.integer('creator_id').unique().references('tc_users.id');
-      table.integer('club_id').unique().references('tc_clubs.id');
+      
+      table.integer('club_id').references('tc_clubs.id');
     })
 
     .createTable('tc_club_categories', (table) => {
       table.increments('id').primary();
       table.string('title');
-      table.string('url');
       table.string('order');
       table.string('using');
       table.string('description');
-
-      table.integer('creator_id').unique().references('tc_users.id');
-      table.integer('club_category_group_id').unique().references('tc_club_category_groups.id');
-    })
-
-    .createTable('tc_forum_groups', (table) => {
-      table.increments('id').primary();
-      table.string('title');
-      table.string('url');
-      table.string('order');
-      table.string('using');
-      table.string('description');
-
-      table.integer('creator_id').unique().references('tc_users.id');
-      table.integer('club_category_id').unique().references('tc_club_categories.id');
+      
+      table.integer('club_category_group_id').references('tc_club_category_groups.id');
     })
 
     .createTable('tc_forums', (table) => {
       table.increments('id').primary();
       table.string('title');
-      table.string('url');
       table.string('order');
       table.string('using');
       table.string('description');
-
-      table.integer('creator_id').unique().references('tc_users.id');
-      table.integer('forum_group_id').unique().references('tc_forum_groups.id');
-    })
-
-    .createTable('tc_forum_settings', (table) => {
-      table.increments('id').primary();
-      table.boolean('is_');
-      table.string('url');
-      table.string('order');
-      table.string('using');
-      table.string('description');
-
-      table.integer('forum_id').unique().references('tc_forums.id');
+      
+      table.integer('category_id').references('tc_club_categories.id');
     })
 
     .createTable('tc_forum_prefixes', (table) => {
       table.increments('id').primary();
       table.string('name').notNullable();
 
-      table.integer('forum_id').unique().references('tc_forums.id');
+      table.integer('forum_id').references('tc_forums.id');
     })
 
     .createTable('tc_forum_prefix_permissions', (table) => {
@@ -410,18 +420,19 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
       table.string('title').notNullable();
       table.string('content').notNullable();
-      table.string('like_count').notNullable();
-      table.string('comment_count').notNullable();
-      table.string('view_count').notNullable();
-      table.string('scrap_count').notNullable();
-      table.string('deleted').notNullable();
-      table.string('has_img').notNullable();
-      table.string('has_video').notNullable();
+      table.string('like_count').defaultTo(0);
+      table.string('comment_count').defaultTo(0);
+      table.string('view_count').defaultTo(0);
+      table.string('scrap_count').defaultTo(0);
+      table.boolean('deleted').defaultTo(0);
+      table.string('has_img');
+      table.string('has_video');
       table.timestamp('created_at').notNullable();
+      table.timestamp('updated_at');
 
-      table.integer('author_id').unique().references('tc_users.id');
-      table.integer('forum_id').unique().references('tc_forums.id');
-      table.integer('prefix_id').unique().references('tc_forum_prefixes.id');
+      table.integer('author_id').references('tc_users.id');
+      table.integer('forum_id').references('tc_forums.id');
+      table.integer('prefix_id').references('tc_forum_prefixes.id');
     })
 
     .createTable('tc_comments', (table) => {
@@ -448,20 +459,29 @@ exports.up = (knex, Promise) => {
 
     .createTable('tc_likes', (table) => {
       table.increments('id').primary();
-      table.string('type').notNullable();
-      table.string('type_id').notNullable();
+      table.string('type').notNullable();   // post, comment, sub_comment
+      table.string('type_id').notNullable();  // post.id, comment.id, sub_comment.id
+
+      table.integer('liker_id').references('tc_users.id');
+    })
+
+    .createTable('tc_user_like_logs', (table) => {
+      table.increments('id').primary();
+      table.string('type').notNullable();   // post, comment, sub_comment
+      table.string('type_id').notNullable();  // post.id, comment.id, sub_comment.id
+      table.string('action_type').notNullable();  // like, dislike
+      table.timestamp('action_at');
 
       table.integer('liker_id').references('tc_users.id');
     })
 
     .createTable('tc_tags', (table) => {
       table.increments('id').primary();
-      table.string('name').notNullable();
+      table.string('name').unique().notNullable();
     })
 
-    .createTable('tc_post_tags', (table) => {
+    .createTable('tc_post_has_tags', (table) => {
       table.increments('id').primary();
-      table.string('name').unique().notNullable();
 
       table.integer('post_id').references('tc_posts.id');
       table.integer('tag_id').references('tc_tags.id');
@@ -471,15 +491,18 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
       table.string('type').notNullable(); // post, club, category
       table.string('type_id').notNullable(); // post, comment
-      table.timestamp('created_at').notNullable();
+      table.timestamp('action_type').notNullable(); //add ,delete
+      table.timestamp('action_at').notNullable();
 
       table.integer('user_id').references('tc_users.id');
     })
 
     .createTable('tc_user_reports', (table) => {
       table.increments('id').primary();
-      table.string('type').notNullable(); // post, comment, user
+      table.string('type').notNullable(); // post, comment, sub_comment, user
       table.string('type_id').notNullable();
+
+      table.string('report_type').notNullable();  // 광고, 음란, 비방 등등
       table.string('description').notNullable();
       table.timestamp('created_at').notNullable();
 
@@ -493,9 +516,10 @@ exports.down = (knex, Promise) => {
     .dropTable('tc_user_reports')
     .dropTable('tc_user_scraps')
 
-    .dropTable('tc_post_tags')
+    .dropTable('tc_post_has_tags')
     .dropTable('tc_tags')
 
+    .dropTable('tc_user_like_logs')
     .dropTable('tc_likes')
 
     .dropTable('tc_sub_comments')
@@ -506,14 +530,15 @@ exports.down = (knex, Promise) => {
     
     .dropTable('tc_forum_prefix_permissions')
     .dropTable('tc_forum_prefixes')
-    .dropTable('tc_forum_settings')
 
     .dropTable('tc_forums')
-    .dropTable('tc_forum_groups')
 
     .dropTable('tc_club_categories')
     .dropTable('tc_club_category_groups')
     .dropTable('tc_clubs')
+
+    .dropTable('tc_user_exp_logs')
+    .dropTable('tc_exp_definitions')
 
     .dropTable('tc_user_point_logs')
     .dropTable('tc_point_definitions')
@@ -528,10 +553,10 @@ exports.down = (knex, Promise) => {
     .dropTable('tc_skill_requires')
     .dropTable('tc_user_skill_logs')
     .dropTable('tc_user_skills')
-    .dropTable('tc_skills_properties')
+    .dropTable('tc_skill_properties')
     .dropTable('tc_skills')
 
-    .dropTable('tc_user_trendbox')
+    .dropTable('tc_user_trendboxes')
 
     .dropTable('tc_user_having_icons')
     .dropTable('tc_icons')
@@ -543,7 +568,7 @@ exports.down = (knex, Promise) => {
     .dropTable('tc_user_roles')
     .dropTable('tc_roles')
 
-    .dropTable('tc_user_find_password_logs')
+    .dropTable('tc_user_password_find_logs')
     .dropTable('tc_user_login_logs')
     .dropTable('tc_user_password_change_logs')
     .dropTable('tc_user_passwords')

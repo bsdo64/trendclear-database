@@ -14,17 +14,83 @@ class tc_users extends Model {
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['email', 'nick', 'uid']
+      required: ['email', 'nick', 'uid'],
+      properties: {
+        email: {type: 'string'},
+        nick: {type: 'string'},
+        uid: {type: 'string'}
+      }
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
-  }
+    return {
+      password: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_user_passwords',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_passwords.user_id'
+        }
+      },
+      // login_logs:{},
+      // password_find_logs:{},
+      // password_change_logs:{},
+      role: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_user_roles',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_roles.user_id'
+        }
+      },
+      profile: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_user_profiles',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_profiles.user_id'
+        }
+      },
 
-  fullName() {
-    return this.email + ' - ' + this.nick;
+      // badges: {},
+      // icons: {},
+      trendbox: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_user_trendboxes',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_trendboxes.user_id'
+        }
+      },
+      // skills: {},
+      // skill_logs: {},
+      grade: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_user_grades',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_grades.user_id'
+        }
+      },
+      // reputation_logs: {},
+      // point_logs: {},
+      // exp_logs: {},
+      posts: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_posts.author_id'
+        }
+      }
+      // comments: {},
+      // sub_comments:{},
+      // likes: {},
+      // scraps: {},
+      // reports: {},
+    };
   }
 
 }
