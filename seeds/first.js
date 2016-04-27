@@ -84,8 +84,7 @@ exports.seed = function(knex, Promise) {
         })
     })
     .then(function() {
-      return [
-        M.tc_clubs.query().insertWithRelated([
+      return M.tc_clubs.query().insertWithRelated([
           { title: '바디/헤어', order: 0, using: 1, description: '바디/헤어', category_groups: [
             { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
               { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
@@ -123,8 +122,6 @@ exports.seed = function(knex, Promise) {
               ]}
             ]}
           ]}
-        ]),
-
-      ]
+        ])
     })
 };
