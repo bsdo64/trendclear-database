@@ -13,14 +13,22 @@ class tc_user_having_icons extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object',
-      required: ['email', 'nick', 'uid']
+      type: 'object'
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      iconDef: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_icons',
+        join: {
+          from: 'tc_user_having_icons.icon_id',
+          to: 'tc_icons.id'
+        }
+      }
+    };
   }
 
   fullName() {

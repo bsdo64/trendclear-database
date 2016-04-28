@@ -55,7 +55,14 @@ class tc_users extends Model {
       },
 
       // badges: {},
-      // icons: {},
+      icon: {
+        relation: Model.OneToManyRelation,
+        modelClass: __dirname + '/tc_user_having_icons',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_having_icons.keeper_id'
+        }
+      },
       trendbox: {
         relation: Model.OneToManyRelation,
         modelClass: __dirname + '/tc_user_trendboxes',

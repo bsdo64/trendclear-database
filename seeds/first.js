@@ -13,6 +13,7 @@ exports.seed = function(knex, Promise) {
   return Promise.join(
     // Deletes ALL existing entries
 
+
     knex('tc_posts').del(),
 
     knex('tc_forum_prefixes').del(),
@@ -21,9 +22,11 @@ exports.seed = function(knex, Promise) {
     knex('tc_club_category_groups').del(),
     knex('tc_clubs').del(),
 
+    knex('tc_user_having_icons').del(),
     knex('tc_user_roles').del(),
     knex('tc_user_grades').del(),
 
+    knex('tc_icons').del(),
     knex('tc_roles').del(),
     knex('tc_grades').del(),
 
@@ -50,6 +53,10 @@ exports.seed = function(knex, Promise) {
           {name: '다이아몬드'}
         ]),
 
+        M.tc_icons.query().insert([
+          {icon_img: 'icon_1.png', type: 'default', created_at: new Date()}
+        ]),
+
         // Inserts seed entries
         M.tc_users.query().insertWithRelated({
           email: 'bsdo1@naver.com',
@@ -65,14 +72,15 @@ exports.seed = function(knex, Promise) {
           },
           trendbox: {
             level: 1
-          }
+          },
         })
       ])
     })
-    .spread(function (roles, grades, user) {
+    .spread(function (roles, grades, icons, user) {
       admin = user;
       let role = _.find(roles, {name: '개발자'});
       let grade = _.find(grades, {name: '없음'});
+      let icon = _.find(icons, {type: 'default'});
 
       return user
         .$relatedQuery('grade')
@@ -81,6 +89,11 @@ exports.seed = function(knex, Promise) {
           return user
             .$relatedQuery('role')
             .insert({role_id: role.id, user_id: user.id})
+        })
+        .then(function () {
+          return user
+            .$relatedQuery('icon')
+            .insert({icon_id: icon.id, keeper_id: user.id, keeping_at: new Date()})
         })
     })
     .then(function() {
