@@ -27,6 +27,7 @@ class tc_users extends Model {
   static get relationMappings() {
     return {
       password: {
+        // filter: query => query.select('id', 'ownerId', 'name'), //Select colums
         relation: Model.OneToManyRelation,
         modelClass: __dirname + '/tc_user_passwords',
         join: {

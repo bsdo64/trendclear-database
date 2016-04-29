@@ -13,7 +13,8 @@ exports.seed = function(knex, Promise) {
   return Promise.join(
     // Deletes ALL existing entries
 
-
+    knex('tc_post_has_tags').del(),
+    knex('tc_tags').del(),
     knex('tc_posts').del(),
 
     knex('tc_forum_prefixes').del(),
@@ -101,6 +102,43 @@ exports.seed = function(knex, Promise) {
           { title: '바디/헤어', order: 0, using: 1, description: '바디/헤어', category_groups: [
             { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
               { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+                  { name: '기능성 샴푸' },
+                  { name: '한방 샴푸' }
+                ] },
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
+                { title: '탈모', order: 2, using: 1, description: '탈모' }
+              ]},
+              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
+                { title: '염색', order: 1, using: 1, description: '염색' },
+                { title: '파마', order: 2, using: 1, description: '파마' }
+              ]}
+            ]},
+            { title: '바디', order: 1, using: 1, description: '바디', categories: [
+              { title: '바디케어', order: 0, using: 1, description: '바디케어', forums: [
+                { title: '바디워시', order: 0, using: 1, description: '바디워시' },
+                { title: '청결제', order: 1, using: 1, description: '청결제' },
+                { title: '입욕제', order: 2, using: 1, description: '입욕제' },
+                { title: '제모용품', order: 3, using: 1, description: '제모용품' },
+                { title: '데오드란트', order: 4, using: 1, description: '데오드란트' },
+                { title: '태닝용품', order: 5, using: 1, description: '태닝용품' }
+              ]},
+              { title: '바디로션/핸드크림', order: 1, using: 1, description: '바디로션/핸드크림', forums: [
+                { title: '바디로션', order: 0, using: 1, description: '바디로션' },
+                { title: '핸드풋케어', order: 1, using: 1, description: '핸드풋케어' },
+                { title: '립케어', order: 2, using: 1, description: '립케어' }
+              ]},
+              { title: '세면', order: 2, using: 1, description: '세면', forums: [
+                { title: '면도용품', order: 0, using: 1, description: '면도' },
+                { title: '칫솔', order: 1, using: 1, description: '칫솔' },
+                { title: '비누', order: 2, using: 1, description: '비누' }
+              ]}
+            ]}
+          ]},
+          { title: '바디/헤어', order: 0, using: 1, description: '바디/헤어', category_groups: [
+            { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
+              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
                 { title: '샴푸/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
                   { name: '기능성 샴푸' },
                   { name: '한방 샴푸' }
@@ -136,5 +174,62 @@ exports.seed = function(knex, Promise) {
             ]}
           ]}
         ])
+    })
+    .then(function() {
+      return [
+        M
+          .tc_users
+          .query()
+          .where({nick: 'nick1'})
+          .first(),
+        M
+          .tc_forums
+          .query()
+          .where({title: '샴푸1/린스'})
+          .first(),
+        M
+          .tc_tags
+          .query()
+          .insert([
+            {name: 'Hello'},
+            {name: 'world'},
+            {name: 'this'}
+          ])
+        ]
+    })
+    .spread(function (user, forum, tags) {
+      console.log(user);
+      console.log(forum);
+      console.log(tags);
+      return M
+        .tc_posts
+        .query()
+        .insert({
+          title: 'Hello',
+          content: 'world',
+          created_at: new Date(),
+          updated_at: new Date(),
+          author_id: user.id,
+          forum_id: forum.id
+        })
+        .then(function (post) {
+          return post
+            .$relatedQuery('tags')
+            .relate([
+              tags[0].id,
+              tags[1].id,
+              tags[2].id,
+            ])
+        })
+        .then(function (tags) {
+          console.log(tags); // --> true
+          return M
+            .tc_posts
+            .query()
+            .eager('[tags]')
+        })
+        .then(function (post) {
+          console.dir(post, {depth: 10});
+        })
     })
 };

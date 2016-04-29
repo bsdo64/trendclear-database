@@ -20,7 +20,25 @@ class tc_posts extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      tags: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/tc_tags',
+        join: {
+          from: 'tc_posts.id',
+          // ManyToMany relation needs the `through` object
+          // to describe the join table.
+          through: {
+            // If you have a model class for the join table
+            // you need to specify it like this:
+            modelClass: __dirname + '/tc_post_has_tags',
+            from: 'tc_post_has_tags.post_id',
+            to: 'tc_post_has_tags.tag_id'
+          },
+          to: 'tc_tags.id'
+        }
+      }
+    };
   }
 
   fullName() {
