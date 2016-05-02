@@ -136,7 +136,7 @@ exports.seed = function(knex, Promise) {
               ]}
             ]}
           ]},
-          { title: '바디/헤어', order: 0, using: 1, description: '바디/헤어', category_groups: [
+          { title: '탈모', order: 0, using: 1, description: '탈모', category_groups: [
             { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
               { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
                 { title: '샴푸/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
