@@ -420,7 +420,7 @@ exports.up = (knex, Promise) => {
     .createTable('tc_posts', (table) => {
       table.increments('id').primary();
       table.string('title').notNullable();
-      table.string('content').notNullable();
+      table.text('content').notNullable();
       table.string('like_count').defaultTo(0);
       table.string('comment_count').defaultTo(0);
       table.string('view_count').defaultTo(0);
