@@ -421,10 +421,10 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
       table.string('title').notNullable();
       table.text('content').notNullable();
-      table.string('like_count').defaultTo(0);
-      table.string('comment_count').defaultTo(0);
-      table.string('view_count').defaultTo(0);
-      table.string('scrap_count').defaultTo(0);
+      table.integer('like_count').defaultTo(0);
+      table.integer('comment_count').defaultTo(0);
+      table.integer('view_count').defaultTo(0);
+      table.integer('scrap_count').defaultTo(0);
       table.boolean('deleted').defaultTo(0);
       table.string('has_img');
       table.string('has_video');
@@ -438,10 +438,10 @@ exports.up = (knex, Promise) => {
 
     .createTable('tc_comments', (table) => {
       table.increments('id').primary();
-      table.string('content').notNullable();
-      table.string('like_count').notNullable();
-      table.string('sub_comment_count').notNullable();
-      table.string('deleted').notNullable();
+      table.text('content').notNullable();
+      table.integer('like_count').notNullable();
+      table.integer('sub_comment_count').notNullable();
+      table.boolean('deleted').notNullable();
 
       table.integer('author_id').references('tc_users.id');
       table.integer('post_id').references('tc_posts.id');
@@ -450,9 +450,9 @@ exports.up = (knex, Promise) => {
     .createTable('tc_sub_comments', (table) => {
       table.increments('id').primary();
       table.string('title').notNullable();
-      table.string('content').notNullable();
-      table.string('like_count').notNullable();
-      table.string('deleted').notNullable();
+      table.text('content').notNullable();
+      table.integer('like_count').notNullable();
+      table.boolean('deleted').notNullable();
 
       table.integer('author_id').references('tc_users.id');
       table.integer('comment_id').references('tc_comments.id');

@@ -37,6 +37,30 @@ class tc_posts extends Model {
           },
           to: 'tc_tags.id'
         }
+      },
+      prefix: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_forum_prefixes',
+        join: {
+          from: 'tc_posts.prefix_id',
+          to: 'tc_forum_prefixes.id'
+        }
+      },
+      forum: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_forums',
+        join: {
+          from: 'tc_posts.forum_id',
+          to: 'tc_forums.id'
+        }
+      },
+      author: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_posts.author_id',
+          to: 'tc_users.id'
+        }
       }
     };
   }

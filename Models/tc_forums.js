@@ -24,7 +24,15 @@ class tc_forums extends Model {
           from: 'tc_forums.id',
           to: 'tc_forum_prefixes.forum_id'
         }
-      }
+       },
+      category: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_club_categories',
+        join: {
+          from: 'tc_forums.category_id',
+          to: 'tc_club_categories.id'
+        }
+      },
     };
   }
 

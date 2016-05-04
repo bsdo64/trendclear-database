@@ -1,5 +1,7 @@
 'use strict';
 const _ = require('lodash');
+const shortId = require('shortid');
+const bcrypt = require('bcrypt');
 
 let M = require('../Models/index');
 
@@ -60,11 +62,11 @@ exports.seed = function(knex, Promise) {
 
         // Inserts seed entries
         M.tc_users.query().insertWithRelated({
-          email: 'bsdo1@naver.com',
+          email: 'bsdo@naver.com',
           nick: 'nick1',
-          uid: '123',
+          uid: shortId.generate(),
           password: {
-            password: 'asdf'
+            password: bcrypt.hashSync('dkbs12', 10)
           },
           profile: {
             sex: 1,
@@ -194,10 +196,16 @@ exports.seed = function(knex, Promise) {
             {name: 'Hello'},
             {name: 'world'},
             {name: 'this'}
-          ])
+          ]),
+        M
+          .tc_forum_prefixes
+          .query()
+          .select('id')
+          .where({name: '한방 샴푸'})
+          .first()
         ]
     })
-    .spread(function (user, forum, tags) {
+    .spread(function (user, forum, tags, prefix) {
       console.log(user);
       console.log(forum);
       console.log(tags);
@@ -210,7 +218,8 @@ exports.seed = function(knex, Promise) {
           created_at: new Date(),
           updated_at: new Date(),
           author_id: user.id,
-          forum_id: forum.id
+          forum_id: forum.id,
+          prefix_id: prefix.id
         })
         .then(function (post) {
           return post
@@ -233,8 +242,7 @@ exports.seed = function(knex, Promise) {
           return M
             .tc_users
             .query()
-            .eager('[grade, role, icon]')
-            .join('tc_user_passwords', 'tc_users.id', '=', 'tc_user_passwords.user_id')
+            .eager('[grade, role, icon, password]')
             .first()
         })
         .then(function (user) {
@@ -246,6 +254,45 @@ exports.seed = function(knex, Promise) {
         })
         .then(function (group) {
           console.dir(group, {depth: 10});
+          return M
+            .tc_club_categories
+            .query()
+            .eager('category_group.club')
+            .first()
+        })
+        .then(function (category) {
+          console.dir(category, {depth: 10});
+          return M
+            .tc_posts
+            .query()
+            .offset(0)
+            .limit(10)
+            .eager('[prefix, author.[icon,profile], forum.category.category_group.club, tags]')
+            .filterEager('forum', builder => builder.select(['id', 'title', 'category_id']))
+            .filterEager('forum.category', builder => builder.select(['id', 'title', 'club_category_group_id']))
+            .filterEager('forum.category.category_group', builder => builder.select(['id', 'title', 'club_id']))
+            .filterEager('forum.category.category_group.club', builder => builder.select('id', 'title'))
+          
+        })
+        .then(function (posts) {
+          console.dir(posts, {depth: 10});
+          return M
+            .tc_posts
+            .query()
+            .select(knex.raw(`COUNT(*) as total`))
+            .where(knex.raw(`deleted = '0'`))
+        })
+        .then(function (counts) {
+          console.dir(counts, {depth: 10});
+          return M
+            .tc_club_categories
+            .query()
+            .eager('[category_group.club, forums]')
+            .where({id: 571})
+            .first()
+        })
+        .then(function (categories) {
+          console.dir(categories, {depth: 10});
         })
     })
 };

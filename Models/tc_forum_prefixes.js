@@ -17,6 +17,19 @@ class tc_forum_prefixes extends Model {
       required: ['name']
     };
   }
+  static get relationMappings() {
+    return {
+      posts: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_forum_prefixes.id',
+          to: 'tc_posts.prefix_id'
+        }
+      }
+    };
+  }
+
 }
 
 module.exports = tc_forum_prefixes;
