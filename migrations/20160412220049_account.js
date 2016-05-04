@@ -11,7 +11,7 @@ exports.up = (knex, Promise) => {
      *  - password
      *  - password_change_log
      *
-     *  - role
+     *  - rolex
      *  - profile
      *  - activity
      *  -

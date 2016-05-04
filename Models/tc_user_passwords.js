@@ -20,8 +20,8 @@ class tc_user_passwords extends Model {
 
   static get relationMappings() {
     return {
-      parent: {
-        relation: Model.OneToOneRelation,
+      user: {
+        relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
         join: {
           from: 'tc_user_passwords.user_id',

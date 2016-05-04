@@ -22,7 +22,7 @@ class tc_clubs extends Model {
   static get relationMappings() {
     return {
       category_groups: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_club_category_groups',
         join: {
           from: 'tc_clubs.id',

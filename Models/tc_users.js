@@ -28,18 +28,18 @@ class tc_users extends Model {
     return {
       password: {
         // filter: query => query.select('id', 'ownerId', 'name'), //Select colums
-        relation: Model.OneToManyRelation,
+        relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_user_passwords',
         join: {
-          from: 'tc_users.id',
-          to: 'tc_user_passwords.user_id'
+          from: 'tc_user_passwords.user_id',
+          to: 'tc_users.id'
         }
       },
       // login_logs:{},
       // password_find_logs:{},
       // password_change_logs:{},
       role: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_user_roles',
         join: {
           from: 'tc_users.id',
@@ -47,7 +47,7 @@ class tc_users extends Model {
         }
       },
       profile: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_user_profiles',
         join: {
           from: 'tc_users.id',
@@ -57,7 +57,7 @@ class tc_users extends Model {
 
       // badges: {},
       icon: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_user_having_icons',
         join: {
           from: 'tc_users.id',
@@ -65,7 +65,7 @@ class tc_users extends Model {
         }
       },
       trendbox: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_user_trendboxes',
         join: {
           from: 'tc_users.id',
@@ -75,7 +75,7 @@ class tc_users extends Model {
       // skills: {},
       // skill_logs: {},
       grade: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_user_grades',
         join: {
           from: 'tc_users.id',
@@ -86,7 +86,7 @@ class tc_users extends Model {
       // point_logs: {},
       // exp_logs: {},
       posts: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_posts',
         join: {
           from: 'tc_users.id',

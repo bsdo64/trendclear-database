@@ -21,7 +21,7 @@ class tc_user_having_icons extends Model {
   static get relationMappings() {
     return {
       iconDef: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_icons',
         join: {
           from: 'tc_user_having_icons.icon_id',

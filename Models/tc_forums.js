@@ -18,7 +18,7 @@ class tc_forums extends Model {
   static get relationMappings() {
     return {
       prefixes: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_forum_prefixes',
         join: {
           from: 'tc_forums.id',

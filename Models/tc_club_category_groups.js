@@ -19,11 +19,19 @@ class tc_club_category_groups extends Model {
   static get relationMappings() {
     return {
       categories: {
-        relation: Model.OneToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_club_categories',
         join: {
           from: 'tc_club_category_groups.id',
           to: 'tc_club_categories.club_category_group_id'
+        }
+      },
+      club: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_clubs',
+        join: {
+          from: 'tc_club_category_groups.club_id',
+          to: 'tc_clubs.id'
         }
       }
     };

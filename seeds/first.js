@@ -74,7 +74,7 @@ exports.seed = function(knex, Promise) {
           trendbox: {
             level: 1
           },
-        })
+        }).first()
       ])
     })
     .spread(function (roles, grades, icons, user) {
@@ -82,20 +82,20 @@ exports.seed = function(knex, Promise) {
       let role = _.find(roles, {name: '개발자'});
       let grade = _.find(grades, {name: '없음'});
       let icon = _.find(icons, {type: 'default'});
-
+      
       return user
         .$relatedQuery('grade')
-        .insert({grade_id: grade.id, user_id: user.id})
+        .insert({grade_id: grade.id})
         .then(function () {
           return user
             .$relatedQuery('role')
-            .insert({role_id: role.id, user_id: user.id})
+            .insert({role_id: role.id})
         })
         .then(function () {
           return user
             .$relatedQuery('icon')
-            .insert({icon_id: icon.id, keeper_id: user.id, keeping_at: new Date()})
-        })
+            .insert({icon_id: icon.id, keeping_at: new Date()})
+        });
     })
     .then(function() {
       return M.tc_clubs.query().insertWithRelated([
@@ -233,11 +233,19 @@ exports.seed = function(knex, Promise) {
           return M
             .tc_users
             .query()
-            .join('tc_user_profiles', 'tc_users.id', '=', 'tc_user_profiles.user_id')
-          
+            .eager('[grade, role, icon]')
+            .join('tc_user_passwords', 'tc_users.id', '=', 'tc_user_passwords.user_id')
+            .first()
         })
         .then(function (user) {
           console.dir(user, {depth: 10});
+          return M
+            .tc_clubs
+            .query()
+            .eager('[category_groups]')
+        })
+        .then(function (group) {
+          console.dir(group, {depth: 10});
         })
     })
 };
