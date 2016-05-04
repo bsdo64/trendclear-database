@@ -138,7 +138,7 @@ exports.seed = function(knex, Promise) {
           ]},
           { title: '탈모', order: 0, using: 1, description: '탈모', category_groups: [
             { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
-              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
+              { title: '탈모케어', order: 0, using: 1, description: '헤어케어', forums: [
                 { title: '샴푸/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
                   { name: '기능성 샴푸' },
                   { name: '한방 샴푸' }
@@ -152,8 +152,8 @@ exports.seed = function(knex, Promise) {
                 { title: '파마', order: 2, using: 1, description: '파마' }
               ]}
             ]},
-            { title: '바디', order: 1, using: 1, description: '바디', categories: [
-              { title: '바디케어', order: 0, using: 1, description: '바디케어', forums: [
+            { title: '가발', order: 1, using: 1, description: '바디', categories: [
+              { title: '탈모영양제', order: 0, using: 1, description: '바디케어', forums: [
                 { title: '바디워시', order: 0, using: 1, description: '바디워시' },
                 { title: '청결제', order: 1, using: 1, description: '청결제' },
                 { title: '입욕제', order: 2, using: 1, description: '입욕제' },
@@ -230,6 +230,14 @@ exports.seed = function(knex, Promise) {
         })
         .then(function (post) {
           console.dir(post, {depth: 10});
+          return M
+            .tc_users
+            .query()
+            .join('tc_user_profiles', 'tc_users.id', '=', 'tc_user_profiles.user_id')
+          
+        })
+        .then(function (user) {
+          console.dir(user, {depth: 10});
         })
     })
 };
