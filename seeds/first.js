@@ -287,12 +287,34 @@ exports.seed = function(knex, Promise) {
           return M
             .tc_club_categories
             .query()
-            .eager('[category_group.club, forums]')
-            .where({id: 571})
+            .where({title: '헤어케어'})
             .first()
         })
-        .then(function (categories) {
-          console.dir(categories, {depth: 10});
+        .then(function (category) {
+          return M
+            .tc_club_categories
+            .query()
+            .select(
+              knex.raw(`"tc_club_categories"."id" as "category_id"`),
+              knex.raw(`"tc_club_category_groups"."id" as "category_group_id"`),
+              knex.raw(`"tc_clubs"."id" as "club_id"`)
+            )
+            .join('tc_club_category_groups', 'tc_club_categories.club_category_group_id', '=', 'tc_club_category_groups.id')
+            .join('tc_clubs', 'tc_club_category_groups.club_id', '=', 'tc_clubs.id')
+            .where('tc_club_categories.id', category.id)
+            .first()
+        })
+        .then(function (clubs) {
+          console.dir(clubs, {depth: 10});
+          return M
+            .tc_clubs
+            .query()
+            .eager('[category_groups.categories.forums]')
+            .where({id: clubs.club_id})
+            .first()
+        })
+        .then(function (clubs) {
+          console.dir(clubs, {depth: 10});
         })
     })
 };
