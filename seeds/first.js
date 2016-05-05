@@ -315,6 +315,14 @@ exports.seed = function(knex, Promise) {
         })
         .then(function (clubs) {
           console.dir(clubs, {depth: 10});
+          return M
+            .tc_posts
+            .query()
+            .eager('[author.[profile, grade, icon], prefix, tags, forum.[category.category_group.club]]')
+            .debug()
+        })
+        .then(function (posts) {
+          console.dir(posts, {depth: 10});
         })
     })
 };
