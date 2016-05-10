@@ -318,7 +318,7 @@ exports.seed = function(knex, Promise) {
           return M
             .tc_posts
             .query()
-            .eager('[author.[profile, grade, icon], prefix, tags, forum.[category.category_group.club]]')
+            .eager('[author.[profile, grade, icon.iconDef], prefix, tags, forum.[category.category_group.club]]')
             .debug()
         })
         .then(function (posts) {

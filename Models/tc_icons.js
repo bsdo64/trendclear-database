@@ -20,7 +20,14 @@ class tc_icons extends Model {
   // This object defines the relations to other models.
   static get relationMappings() {
     return {
-      
+      hasIcon: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_user_having_icons',
+        join: {
+          from: 'tc_icons.id',
+          to: 'tc_user_having_icons.icon_id'
+        }
+      }
     };
   }
 
