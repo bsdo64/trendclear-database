@@ -19,7 +19,16 @@ class tc_user_grades extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      gradeDef: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_grades',
+        join: {
+          from: 'tc_user_grades.grade_id',
+          to: 'tc_grades.id'
+        }
+      },
+    };
   }
 
   fullName() {

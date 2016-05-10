@@ -49,11 +49,11 @@ exports.seed = function(knex, Promise) {
         // Inserts seed entries
         M.tc_grades.query().insert([
           {name: '없음'},
-          {name: '브론즈'},
-          {name: '실버'},
-          {name: '골드'},
-          {name: '플레티넘'},
-          {name: '다이아몬드'}
+          {name: '브론즈', img: 'grade_bronze.png'},
+          {name: '실버', img: 'grade_silver.png'},
+          {name: '골드', img: 'grade_gold.png'},
+          {name: '플레티넘', img: 'grade_plat.png'},
+          {name: '다이아몬드', img: 'grade_dia.png'}
         ]),
 
         M.tc_icons.query().insert([
