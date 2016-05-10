@@ -23,7 +23,7 @@ class tc_user_profiles extends Model {
     return {
       user: {
         relation: Model.BelongsToOneRelation,
-        modelClass: __dirname + '/tc_user',
+        modelClass: __dirname + '/tc_users',
         join: {
           from:'tc_user_profiles.user_id',
           to: 'tc_users.id'
