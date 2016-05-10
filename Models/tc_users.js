@@ -39,7 +39,7 @@ class tc_users extends Model {
       // password_find_logs:{},
       // password_change_logs:{},
       role: {
-        relation: Model.HasManyRelation,
+        relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_user_roles',
         join: {
           from: 'tc_users.id',
@@ -65,7 +65,7 @@ class tc_users extends Model {
         }
       },
       trendbox: {
-        relation: Model.HasManyRelation,
+        relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_user_trendboxes',
         join: {
           from: 'tc_users.id',
@@ -75,7 +75,7 @@ class tc_users extends Model {
       // skills: {},
       // skill_logs: {},
       grade: {
-        relation: Model.HasManyRelation,
+        relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_user_grades',
         join: {
           from: 'tc_users.id',
