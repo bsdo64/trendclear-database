@@ -47,7 +47,7 @@ class tc_users extends Model {
         }
       },
       profile: {
-        relation: Model.HasManyRelation,
+        relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_user_profiles',
         join: {
           from: 'tc_users.id',

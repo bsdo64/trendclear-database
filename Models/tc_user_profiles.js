@@ -20,7 +20,16 @@ class tc_user_profiles extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_user',
+        join: {
+          from:'tc_user_profiles.user_id',
+          to: 'tc_users.id'
+        }
+      }
+    };
   }
 
   fullName() {
