@@ -14,19 +14,38 @@ class tc_comments extends Model {
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['email', 'nick', 'uid']
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      author: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_comments.author_id',
+          to: 'tc_users.id'
+        }
+      },
+      post: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_comments.post_id',
+          to: 'tc_posts.id'
+        }
+      },
+      subComments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_sub_comments',
+        join: {
+          from: 'tc_comments.id',
+          to: 'tc_sub_comments.comment_id'
+        }
+      }
+    };
   }
-
-  fullName() {
-    return this.email + ' - ' + this.nick;
-  }
-
 }
 
 module.exports = tc_comments;

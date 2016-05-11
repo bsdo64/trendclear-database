@@ -61,6 +61,14 @@ class tc_posts extends Model {
           from: 'tc_posts.author_id',
           to: 'tc_users.id'
         }
+      },
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_comments',
+        join: {
+          from: 'tc_posts.id',
+          to: 'tc_comments.post_id'
+        }
       }
     };
   }

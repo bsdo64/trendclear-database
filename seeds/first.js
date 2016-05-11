@@ -15,6 +15,9 @@ exports.seed = function(knex, Promise) {
   return Promise.join(
     // Deletes ALL existing entries
 
+    knex('tc_sub_comments').del(),
+    knex('tc_comments').del(),
+
     knex('tc_post_has_tags').del(),
     knex('tc_tags').del(),
     knex('tc_posts').del(),
@@ -209,6 +212,8 @@ exports.seed = function(knex, Promise) {
       console.log(user);
       console.log(forum);
       console.log(tags);
+
+      let p;
       return M
         .tc_posts
         .query()
@@ -222,6 +227,7 @@ exports.seed = function(knex, Promise) {
           prefix_id: prefix.id
         })
         .then(function (post) {
+          p = post;
           return post
             .$relatedQuery('tags')
             .relate([
@@ -323,6 +329,47 @@ exports.seed = function(knex, Promise) {
         })
         .then(function (posts) {
           console.dir(posts, {depth: 10});
+          return p
+            .$relatedQuery('comments')
+            .insert({
+              content: 'Fluffy world!',
+              author_id: user.id
+            })
+            .then(function (comment) {
+              return p
+                .$query()
+                .increment('comment_count', 1)
+                .then(function () {
+                  return comment
+                })
+            })
+        })
+        .then(function (comment) {
+          console.dir(comment, {depth: 10}); // --> true
+          return comment
+            .$relatedQuery('subComments')
+            .insert({
+              content: 'Fluffy sub comments!',
+              author_id: user.id
+            })
+            .then(function (sub_comment) {
+              return comment
+                .$query()
+                .increment('sub_comment_count', 1)
+                .then(function () {
+                  return sub_comment
+                })
+            })
+        })
+        .then(function (subcomment) {
+          console.dir(subcomment, {depth: 10}); // --> true
+          return p
+            .$query()
+            .eager('[comments.[subComments.author, author]]')
+        })
+        .then(function (post) {
+          console.dir(post, {depth: 10}); // --> true
+
         })
     })
 };

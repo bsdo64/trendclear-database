@@ -439,9 +439,9 @@ exports.up = (knex, Promise) => {
     .createTable('tc_comments', (table) => {
       table.increments('id').primary();
       table.text('content').notNullable();
-      table.integer('like_count').notNullable();
-      table.integer('sub_comment_count').notNullable();
-      table.boolean('deleted').notNullable();
+      table.integer('like_count').defaultTo(0);
+      table.integer('sub_comment_count').defaultTo(0);
+      table.boolean('deleted').defaultTo(0);
 
       table.integer('author_id').references('tc_users.id');
       table.integer('post_id').references('tc_posts.id');
@@ -449,10 +449,9 @@ exports.up = (knex, Promise) => {
 
     .createTable('tc_sub_comments', (table) => {
       table.increments('id').primary();
-      table.string('title').notNullable();
       table.text('content').notNullable();
-      table.integer('like_count').notNullable();
-      table.boolean('deleted').notNullable();
+      table.integer('like_count').defaultTo(0);
+      table.boolean('deleted').defaultTo(0);
 
       table.integer('author_id').references('tc_users.id');
       table.integer('comment_id').references('tc_comments.id');
