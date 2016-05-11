@@ -333,7 +333,8 @@ exports.seed = function(knex, Promise) {
             .$relatedQuery('comments')
             .insert({
               content: 'Fluffy world!',
-              author_id: user.id
+              author_id: user.id,
+              created_at: new Date()
             })
             .then(function (comment) {
               return p
@@ -350,7 +351,8 @@ exports.seed = function(knex, Promise) {
             .$relatedQuery('subComments')
             .insert({
               content: 'Fluffy sub comments!',
-              author_id: user.id
+              author_id: user.id,
+              created_at: new Date()
             })
             .then(function (sub_comment) {
               return comment

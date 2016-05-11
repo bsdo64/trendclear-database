@@ -441,7 +441,10 @@ exports.up = (knex, Promise) => {
       table.text('content').notNullable();
       table.integer('like_count').defaultTo(0);
       table.integer('sub_comment_count').defaultTo(0);
+      table.timestamp('created_at').notNullable();
+      table.timestamp('updated_at');
       table.boolean('deleted').defaultTo(0);
+
 
       table.integer('author_id').references('tc_users.id');
       table.integer('post_id').references('tc_posts.id');
@@ -452,6 +455,8 @@ exports.up = (knex, Promise) => {
       table.text('content').notNullable();
       table.integer('like_count').defaultTo(0);
       table.boolean('deleted').defaultTo(0);
+      table.timestamp('created_at').notNullable();
+      table.timestamp('updated_at');
 
       table.integer('author_id').references('tc_users.id');
       table.integer('comment_id').references('tc_comments.id');
