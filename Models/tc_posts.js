@@ -69,6 +69,15 @@ class tc_posts extends Model {
           from: 'tc_posts.id',
           to: 'tc_comments.post_id'
         }
+      },
+      likes: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_likes',
+        filter: {type: 'post'},
+        join: {
+          from: 'tc_posts.id',
+          to: 'tc_likes.type_id'
+        }
       }
     };
   }

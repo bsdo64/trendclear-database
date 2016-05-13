@@ -43,6 +43,15 @@ class tc_comments extends Model {
           from: 'tc_comments.id',
           to: 'tc_sub_comments.comment_id'
         }
+      },
+      likes: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_likes',
+        filter: {type: 'comment'},
+        join: {
+          from: 'tc_comments.id',
+          to: 'tc_likes.type_id'
+        }
       }
     };
   }
