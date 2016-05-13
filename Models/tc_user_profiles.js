@@ -13,8 +13,7 @@ class tc_user_profiles extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object',
-      required: ['sex', 'birth', 'joined_at']
+      type: 'object'
     };
   }
 
