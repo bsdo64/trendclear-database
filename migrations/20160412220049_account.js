@@ -169,6 +169,7 @@ exports.up = (knex, Promise) => {
       table.integer('level').unsigned().defaultTo(1).notNullable();
       table.integer('exp').unsigned().defaultTo(0).notNullable();
       table.integer('next_exp').unsigned().defaultTo(10).notNullable();
+      table.integer('prev_exp').unsigned().defaultTo(0).notNullable();
 
       table.integer('reputation').defaultTo(0).notNullable();
 
