@@ -17,6 +17,7 @@ class tc_user_trendboxes extends Model {
       properties: {
         level: { type: 'integer' },
         exp: { type: 'integer' },
+        next_exp: { type: 'integer' },
         reputation: { type: 'integer' },
         T: { type: 'integer' },
         R: { type: 'integer' },

@@ -15,6 +15,9 @@ exports.seed = function(knex, Promise) {
   return Promise.join(
     // Deletes ALL existing entries
 
+    knex('tc_user_like_logs').del(),
+    knex('tc_likes').del(),
+
     knex('tc_sub_comments').del(),
     knex('tc_comments').del(),
 
@@ -138,6 +141,66 @@ exports.seed = function(knex, Promise) {
                 { title: '면도용품', order: 0, using: 1, description: '면도' },
                 { title: '칫솔', order: 1, using: 1, description: '칫솔' },
                 { title: '비누', order: 2, using: 1, description: '비누' }
+              ]}
+            ]},
+            { title: '헤어', order: 2, using: 1, description: '헤어', categories: [
+              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+                  { name: '기능성 샴푸' },
+                  { name: '한방 샴푸' }
+                ] },
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
+                { title: '탈모', order: 2, using: 1, description: '탈모' }
+              ]},
+              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
+                { title: '염색', order: 1, using: 1, description: '염색' },
+                { title: '파마', order: 2, using: 1, description: '파마' }
+              ]}
+            ]},
+            { title: '헤어', order: 3, using: 1, description: '헤어', categories: [
+              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+                  { name: '기능성 샴푸' },
+                  { name: '한방 샴푸' }
+                ] },
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
+                { title: '탈모', order: 2, using: 1, description: '탈모' }
+              ]},
+              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
+                { title: '염색', order: 1, using: 1, description: '염색' },
+                { title: '파마', order: 2, using: 1, description: '파마' }
+              ]}
+            ]},
+            { title: '헤어', order: 4, using: 1, description: '헤어', categories: [
+              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+                  { name: '기능성 샴푸' },
+                  { name: '한방 샴푸' }
+                ] },
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
+                { title: '탈모', order: 2, using: 1, description: '탈모' }
+              ]},
+              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
+                { title: '염색', order: 1, using: 1, description: '염색' },
+                { title: '파마', order: 2, using: 1, description: '파마' }
+              ]}
+            ]},
+            { title: '헤어', order: 5, using: 1, description: '헤어', categories: [
+              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+                  { name: '기능성 샴푸' },
+                  { name: '한방 샴푸' }
+                ] },
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
+                { title: '탈모', order: 2, using: 1, description: '탈모' }
+              ]},
+              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
+                { title: '염색', order: 1, using: 1, description: '염색' },
+                { title: '파마', order: 2, using: 1, description: '파마' }
               ]}
             ]}
           ]},
