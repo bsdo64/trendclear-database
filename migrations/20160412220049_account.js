@@ -542,8 +542,9 @@ exports.down = (knex, Promise) => {
 
     .dropTable('tc_comments')
 
+    .dropTable('tc_post_views')
     .dropTable('tc_posts')
-    
+
     .dropTable('tc_forum_prefix_permissions')
     .dropTable('tc_forum_prefixes')
 

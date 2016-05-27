@@ -23,6 +23,8 @@ exports.seed = function(knex, Promise) {
 
     knex('tc_post_has_tags').del(),
     knex('tc_tags').del(),
+    
+    knex('tc_post_views').del(),
     knex('tc_posts').del(),
 
     knex('tc_forum_prefixes').del(),
