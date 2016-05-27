@@ -436,6 +436,16 @@ exports.up = (knex, Promise) => {
       table.integer('forum_id').references('tc_forums.id');
       table.integer('prefix_id').references('tc_forum_prefixes.id');
     })
+    
+    .createTable('tc_post_views', (table) => {
+      table.increments('id').primary();
+      
+      table.integer('post_id');
+      table.integer('user_id');
+      table.string('ip');
+      table.timestamp('view_at');
+      table.timestamp('updated_at');
+    })
 
     .createTable('tc_comments', (table) => {
       table.increments('id').primary();
