@@ -187,6 +187,7 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
       table.string('name');
       table.string('img');
+      table.string('description');
     })
 
     /**
@@ -196,7 +197,7 @@ exports.up = (knex, Promise) => {
     .createTable('tc_skill_properties', (table) => {
       table.increments('id').primary();
       table.boolean('leveling');
-      table.string('cooltime');
+      table.timestamp('cooltime');
 
       table.integer('skill_id').references('tc_skills.id');
     })
@@ -234,11 +235,11 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
 
       table.integer('level').defaultTo(1);
-      table.integer('reputation').defaultTo(1);
-      table.integer('T').defaultTo(1);
-      table.integer('R').defaultTo(1);
-      table.integer('badge').defaultTo(1);
-      table.integer('grade').defaultTo(1);
+      table.integer('reputation').defaultTo(0);
+      table.integer('T').defaultTo(0);
+      table.integer('R').defaultTo(0);
+      table.integer('badge');
+      table.integer('grade');
 
       table.integer('skill_id').references('tc_skills.id');
     })
@@ -524,11 +525,37 @@ exports.up = (knex, Promise) => {
 
       table.integer('reporter_id').references('tc_users.id');
     })
+    
+    .createTable('tc_notification', (table) => {
+      table.increments('id').primary();
+
+      table.string('type');
+      table.string('description');
+      
+      table.integer('target_id');
+      
+      table.integer('count');
+    })
+    
+    .createTable('tc_user_notification', (table) => {
+      table.increments('id').primary();
+      
+      table.timestamp('receive_at');
+      table.boolean('read');
+      table.timestamp('read_at');
+      
+      table.integer('from').references('tc_users.id');
+      table.integer('notification_id').references('tc_notification.id');
+      table.integer('user_id').references('tc_users.id');
+    })
 };
 
 exports.down = (knex, Promise) => {
   return knex
     .schema
+    .dropTable('tc_user_notification')
+    .dropTable('tc_notification')
+
     .dropTable('tc_user_reports')
     .dropTable('tc_user_scraps')
 

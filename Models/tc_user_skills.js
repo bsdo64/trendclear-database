@@ -13,14 +13,31 @@ class tc_user_skills extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object',
-      required: ['email', 'nick', 'uid']
+      type: 'object'
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      skill: {
+        // filter: query => query.select('id', 'ownerId', 'name'), //Select colums
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_skills',
+        join: {
+          from: 'tc_user_skills.skill_id',
+          to: 'tc_skills.id'
+        }
+      },
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_user_skills.user_id',
+          to: 'tc_users.id'
+        }
+      }
+    };
   }
 
   fullName() {

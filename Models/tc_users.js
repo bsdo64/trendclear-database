@@ -72,7 +72,14 @@ class tc_users extends Model {
           to: 'tc_user_trendboxes.user_id'
         }
       },
-      // skills: {},
+      skills: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_skills',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_skills.user_id'
+        }
+      },
       // skill_logs: {},
       grade: {
         relation: Model.HasOneRelation,

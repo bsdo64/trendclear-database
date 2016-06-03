@@ -13,14 +13,22 @@ class tc_users extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object',
-      required: ['email', 'nick', 'uid']
+      type: 'object'
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      skill: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_skills',
+        join: {
+          from: 'tc_skills.id',
+          to: 'tc_skill_requires.skill_id'
+        }
+      }
+    };
   }
 
   fullName() {
