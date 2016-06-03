@@ -99,12 +99,21 @@ class tc_users extends Model {
           from: 'tc_users.id',
           to: 'tc_posts.author_id'
         }
-      }
+      },
       // comments: {},
       // sub_comments:{},
       // likes: {},
       // scraps: {},
       // reports: {},
+
+      notifications: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_notifications',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_notifications.user_id'
+        }
+      }
     };
   }
 

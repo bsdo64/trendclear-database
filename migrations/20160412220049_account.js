@@ -527,36 +527,31 @@ exports.up = (knex, Promise) => {
       table.integer('reporter_id').references('tc_users.id');
     })
     
-    .createTable('tc_notification', (table) => {
+    .createTable('tc_user_notifications', (table) => {
       table.increments('id').primary();
 
       table.string('type');
       table.string('description');
-      
-      table.integer('target_id');
-      
-      table.integer('count');
-    })
-    
-    .createTable('tc_user_notification', (table) => {
-      table.increments('id').primary();
-      
-      table.timestamp('receive_at');
+
       table.boolean('read');
       table.timestamp('read_at');
+
+      table.integer('target_id');
+      table.integer('count');
       
+      table.timestamp('receive_at');
       table.integer('from').references('tc_users.id');
-      table.integer('notification_id').references('tc_notification.id');
+      table.integer('notification_id').references('tc_notifications.id');
       table.integer('user_id').references('tc_users.id');
+
     })
 };
 
 exports.down = (knex, Promise) => {
   return knex
     .schema
-    .dropTable('tc_user_notification')
-    .dropTable('tc_notification')
-
+    .dropTable('tc_user_notifications')
+    
     .dropTable('tc_user_reports')
     .dropTable('tc_user_scraps')
 
