@@ -15,6 +15,11 @@ exports.seed = function(knex, Promise) {
   return Promise.join(
     // Deletes ALL existing entries
 
+    knex('tc_user_skills').del(),
+    knex('tc_skill_requires').del(),
+    knex('tc_skill_properties').del(),
+    knex('tc_skills').del(),
+
     knex('tc_user_like_logs').del(),
     knex('tc_likes').del(),
 
@@ -84,10 +89,16 @@ exports.seed = function(knex, Promise) {
           trendbox: {
             level: 1
           },
-        }).first()
+        }).first(),
+
+        M.tc_skills.query().insert([
+          {name: 'write_post', img: 'skill_0.jpg', description: '글쓰기'},
+          {name: 'write_comment', img: 'skill_1.jpg', description: '댓글쓰기'},
+          {name: 'write_sub_comment', img: 'skill_2.jpg', description: '대댓글쓰기'},
+        ])
       ])
     })
-    .spread(function (roles, grades, icons, user) {
+    .spread(function (roles, grades, icons, user, skills) {
       admin = user;
       let role = _.find(roles, {name: '개발자'});
       let grade = _.find(grades, {name: '없음'});
@@ -105,7 +116,34 @@ exports.seed = function(knex, Promise) {
           return user
             .$relatedQuery('icon')
             .insert({icon_id: icon.id, keeping_at: new Date()})
-        });
+        })
+        .then(function() {
+          return user
+            .$relatedQuery('skills')
+            .insert([
+              {level: 1, skill_id: skills[0].id},
+              {level: 1, skill_id: skills[1].id},
+              {level: 1, skill_id: skills[2].id},
+            ])
+        })
+        .then(function() {
+          let queryArray = [];
+          for (let index in skills) {
+            queryArray.push(
+              skills[index]
+                .$relatedQuery('property')
+                .insert({
+                  leveling: false,
+                  cooltime: 10
+                })
+            )
+          }
+
+          return (queryArray)
+        })
+        .spread(function() {
+          return true;
+        })
     })
     .then(function() {
       return M.tc_clubs.query().insertWithRelated([

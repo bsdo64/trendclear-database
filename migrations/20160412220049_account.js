@@ -197,7 +197,7 @@ exports.up = (knex, Promise) => {
     .createTable('tc_skill_properties', (table) => {
       table.increments('id').primary();
       table.boolean('leveling');
-      table.timestamp('cooltime');
+      table.integer('cooltime');
 
       table.integer('skill_id').references('tc_skills.id');
     })
@@ -210,6 +210,7 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
       table.integer('level').defaultTo(1).notNullable();
 
+      table.timestamp('using_at');
       table.integer('skill_id').references('tc_skills.id');
       table.integer('user_id').references('tc_users.id');
     })
@@ -594,9 +595,10 @@ exports.down = (knex, Promise) => {
     .dropTable('tc_grade_requires')
     .dropTable('tc_grades')
 
-    .dropTable('tc_skill_requires')
+
     .dropTable('tc_user_skill_logs')
     .dropTable('tc_user_skills')
+    .dropTable('tc_skill_requires')
     .dropTable('tc_skill_properties')
     .dropTable('tc_skills')
 
