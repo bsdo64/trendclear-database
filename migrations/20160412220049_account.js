@@ -541,7 +541,6 @@ exports.up = (knex, Promise) => {
       
       table.timestamp('receive_at');
       table.integer('from').references('tc_users.id');
-      table.integer('notification_id').references('tc_notifications.id');
       table.integer('user_id').references('tc_users.id');
 
     })
