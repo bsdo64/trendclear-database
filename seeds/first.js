@@ -92,9 +92,9 @@ exports.seed = function(knex, Promise) {
         }).first(),
 
         M.tc_skills.query().insert([
-          {name: 'write_post', img: 'skill_0.jpg', description: '글쓰기'},
-          {name: 'write_comment', img: 'skill_1.jpg', description: '댓글쓰기'},
-          {name: 'write_sub_comment', img: 'skill_2.jpg', description: '대댓글쓰기'},
+          {title: '글쓰기', name: 'write_post', img: 'skill_0.jpg', description: '새로운 글을 등록할 수 있습니다.'},
+          {title: '댓글쓰기', name: 'write_comment', img: 'skill_1.jpg', description: '새로운 댓글을 등록 할 수 있습니다.'},
+          {title: '대댓글쓰기', name: 'write_sub_comment', img: 'skill_2.jpg', description: '새로운 대댓글을 달 수 있습니다.'},
         ])
       ])
     })

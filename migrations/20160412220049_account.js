@@ -185,6 +185,7 @@ exports.up = (knex, Promise) => {
      */
     .createTable('tc_skills', (table) => {
       table.increments('id').primary();
+      table.string('title');
       table.string('name');
       table.string('img');
       table.string('description');
