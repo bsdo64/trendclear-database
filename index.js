@@ -12,3 +12,4 @@ const knex = Knex(connection);
 Model.knex(knex);
 
 module.exports.Models = require('./Models/index');
+module.exports.knex = knex;
