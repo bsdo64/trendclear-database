@@ -293,6 +293,7 @@ exports.seed = function(knex, Promise) {
         M
           .tc_forums
           .query()
+          .eager('[category.category_group.club]')
           .where({title: '샴푸1/린스'})
           .first(),
         M
@@ -326,6 +327,9 @@ exports.seed = function(knex, Promise) {
           created_at: new Date(),
           updated_at: new Date(),
           author_id: user.id,
+          club_id: forum.category.category_group.club.id,
+          category_group_id: forum.category.category_group.id,
+          category_id: forum.category.id,
           forum_id: forum.id,
           prefix_id: prefix.id
         })

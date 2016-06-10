@@ -54,6 +54,30 @@ class tc_posts extends Model {
           to: 'tc_forums.id'
         }
       },
+      category: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_club_categories',
+        join: {
+          from: 'tc_posts.category_id',
+          to: 'tc_club_categories.id'
+        }
+      },
+      category_group: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_club_category_groups',
+        join: {
+          from: 'tc_posts.category_group_id',
+          to: 'tc_club_category_groups.id'
+        }
+      },
+      club: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_clubs',
+        join: {
+          from: 'tc_posts.club_id',
+          to: 'tc_clubs.id'
+        }
+      },
       author: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',

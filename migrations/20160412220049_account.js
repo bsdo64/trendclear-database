@@ -436,6 +436,9 @@ exports.up = (knex, Promise) => {
       table.timestamp('updated_at');
 
       table.integer('author_id').references('tc_users.id');
+      table.integer('club_id').references('tc_clubs.id');
+      table.integer('category_group_id').references('tc_club_category_groups.id');
+      table.integer('category_id').references('tc_club_categories.id');
       table.integer('forum_id').references('tc_forums.id');
       table.integer('prefix_id').references('tc_forum_prefixes.id');
     })

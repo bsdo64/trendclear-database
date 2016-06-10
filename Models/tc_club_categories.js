@@ -21,6 +21,14 @@ class tc_club_categories extends Model {
   // This object defines the relations to other models.
   static get relationMappings() {
     return {
+      posts: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_club_categories.id',
+          to: 'tc_posts.category_id'
+        }
+      },
       forums: {
         relation: Model.HasManyRelation,
         modelClass: __dirname + '/tc_forums',
