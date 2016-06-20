@@ -7,7 +7,7 @@ module.exports = {
     connection: {
       database: 'venacle_dev',
       user:     'venacle',
-      password: 'venacle',
+      password: 'venacledkbs12',
       host    : '127.0.0.1',
       charset : 'utf8'
     }
@@ -18,7 +18,7 @@ module.exports = {
     connection: {
       database: 'venacle',
       user:     'venacle',
-      password: 'venacle'
+      password: 'venacledkbs12'
     },
     pool: {
       min: 2,
@@ -34,7 +34,7 @@ module.exports = {
     connection: {
       database: 'venacle',
       user:     'venacle',
-      password: 'venacle'
+      password: 'venacledkbs12'
     },
     pool: {
       min: 2,
