@@ -5,9 +5,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'trendclear_dev',
-      user:     'trendclear',
-      password: 'trendclear',
+      database: 'venacle_dev',
+      user:     'venacle',
+      password: 'venacle',
       host    : '127.0.0.1',
       charset : 'utf8'
     }
@@ -16,32 +16,32 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: 'trendclear',
-      user:     'trendclear',
-      password: 'trendclear'
+      database: 'venacle',
+      user:     'venacle',
+      password: 'venacle'
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: 'trendclear_migrations'
+      tableName: 'venacle_migrations'
     }
   },
 
   production: {
     client: 'postgresql',
     connection: {
-      database: 'trendclear',
-      user:     'trendclear',
-      password: 'trendclear'
+      database: 'venacle',
+      user:     'venacle',
+      password: 'venacle'
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: 'trendclear_migrations'
+      tableName: 'venacle_migrations'
     }
   }
 
