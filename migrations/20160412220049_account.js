@@ -395,6 +395,7 @@ exports.up = (knex, Promise) => {
       table.string('using');
       table.string('description');
       
+      table.integer('club_id').references('tc_clubs.id');
       table.integer('club_category_group_id').references('tc_club_category_groups.id');
     })
 
@@ -404,7 +405,9 @@ exports.up = (knex, Promise) => {
       table.string('order');
       table.string('using');
       table.string('description');
-      
+
+      table.integer('club_id').references('tc_clubs.id');
+      table.integer('club_category_group_id').references('tc_club_category_groups.id');
       table.integer('category_id').references('tc_club_categories.id');
     })
 

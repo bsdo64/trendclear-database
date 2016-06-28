@@ -36,6 +36,22 @@ class tc_clubs extends Model {
           from: 'tc_clubs.id',
           to: 'tc_club_category_groups.club_id'
         }
+      },
+      categories: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_club_categories',
+        join: {
+          from: 'tc_clubs.id',
+          to: 'tc_club_categories.club_id'
+        }
+      },
+      forums: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_forums',
+        join: {
+          from: 'tc_clubs.id',
+          to: 'tc_forums.club_id'
+        }
       }
     };
   }

@@ -34,6 +34,14 @@ class tc_club_category_groups extends Model {
           to: 'tc_club_categories.club_category_group_id'
         }
       },
+      forums: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_forums',
+        join: {
+          from: 'tc_club_category_groups.id',
+          to: 'tc_forums.club_category_group_id'
+        }
+      },
       club: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_clubs',

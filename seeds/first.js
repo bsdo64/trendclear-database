@@ -147,137 +147,52 @@ exports.seed = function(knex, Promise) {
     })
     .then(function() {
       return M.tc_clubs.query().insertWithRelated([
-          { title: '바디/헤어', order: 0, using: 1, description: '바디/헤어', category_groups: [
-            { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
-              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
-                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+          { '#id': 'club1', title: '바디/헤어', order: 0, using: 1, description: '바디/헤어', category_groups: [
+            { '#id': 'cg1', title: '헤어', order: 0, using: 1, description: '헤어', club_id: '#ref{club1.id}', categories: [
+              { '#id': 'c1', title: '헤어케어', order: 0, using: 1, description: '헤어케어', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', category_id: '#ref{c1.id}', prefixes: [
                   { name: '기능성 샴푸' },
                   { name: '한방 샴푸' }
                 ] },
-                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
-                { title: '탈모', order: 2, using: 1, description: '탈모' }
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', category_id: '#ref{c1.id}',  },
+                { title: '탈모', order: 2, using: 1, description: '탈모', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', category_id: '#ref{c1.id}' }
               ]},
-              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
-                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
-                { title: '염색', order: 1, using: 1, description: '염색' },
-                { title: '파마', order: 2, using: 1, description: '파마' }
+              { '#id': 'c2', title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', category_id: '#ref{c2.id}' },
+                { title: '염색', order: 1, using: 1, description: '염색', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', category_id: '#ref{c2.id}' },
+                { title: '파마', order: 2, using: 1, description: '파마', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg1.id}', category_id: '#ref{c2.id}' }
               ]}
             ]},
-            { title: '바디', order: 1, using: 1, description: '바디', categories: [
-              { title: '바디케어', order: 0, using: 1, description: '바디케어', forums: [
-                { title: '바디워시', order: 0, using: 1, description: '바디워시' },
-                { title: '청결제', order: 1, using: 1, description: '청결제' },
-                { title: '입욕제', order: 2, using: 1, description: '입욕제' },
-                { title: '제모용품', order: 3, using: 1, description: '제모용품' },
-                { title: '데오드란트', order: 4, using: 1, description: '데오드란트' },
-                { title: '태닝용품', order: 5, using: 1, description: '태닝용품' }
-              ]},
-              { title: '바디로션/핸드크림', order: 1, using: 1, description: '바디로션/핸드크림', forums: [
-                { title: '바디로션', order: 0, using: 1, description: '바디로션' },
-                { title: '핸드풋케어', order: 1, using: 1, description: '핸드풋케어' },
-                { title: '립케어', order: 2, using: 1, description: '립케어' }
-              ]},
-              { title: '세면', order: 2, using: 1, description: '세면', forums: [
-                { title: '면도용품', order: 0, using: 1, description: '면도' },
-                { title: '칫솔', order: 1, using: 1, description: '칫솔' },
-                { title: '비누', order: 2, using: 1, description: '비누' }
-              ]}
-            ]},
-            { title: '헤어', order: 2, using: 1, description: '헤어', categories: [
-              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
-                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+            { '#id': 'cg3', title: '헤어', order: 0, using: 1, description: '헤어', club_id: '#ref{club1.id}', categories: [
+              { '#id': 'c5', title: '헤어케어', order: 0, using: 1, description: '헤어케어', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', forums: [
+                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', category_id: '#ref{c5.id}', prefixes: [
                   { name: '기능성 샴푸' },
                   { name: '한방 샴푸' }
                 ] },
-                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
-                { title: '탈모', order: 2, using: 1, description: '탈모' }
+                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', category_id: '#ref{c5.id}',  },
+                { title: '탈모', order: 2, using: 1, description: '탈모', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', category_id: '#ref{c5.id}' }
               ]},
-              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
-                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
-                { title: '염색', order: 1, using: 1, description: '염색' },
-                { title: '파마', order: 2, using: 1, description: '파마' }
-              ]}
-            ]},
-            { title: '헤어', order: 3, using: 1, description: '헤어', categories: [
-              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
-                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
-                  { name: '기능성 샴푸' },
-                  { name: '한방 샴푸' }
-                ] },
-                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
-                { title: '탈모', order: 2, using: 1, description: '탈모' }
-              ]},
-              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
-                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
-                { title: '염색', order: 1, using: 1, description: '염색' },
-                { title: '파마', order: 2, using: 1, description: '파마' }
-              ]}
-            ]},
-            { title: '헤어', order: 4, using: 1, description: '헤어', categories: [
-              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
-                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
-                  { name: '기능성 샴푸' },
-                  { name: '한방 샴푸' }
-                ] },
-                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
-                { title: '탈모', order: 2, using: 1, description: '탈모' }
-              ]},
-              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
-                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
-                { title: '염색', order: 1, using: 1, description: '염색' },
-                { title: '파마', order: 2, using: 1, description: '파마' }
-              ]}
-            ]},
-            { title: '헤어', order: 5, using: 1, description: '헤어', categories: [
-              { title: '헤어케어', order: 0, using: 1, description: '헤어케어', forums: [
-                { title: '샴푸1/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
-                  { name: '기능성 샴푸' },
-                  { name: '한방 샴푸' }
-                ] },
-                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
-                { title: '탈모', order: 2, using: 1, description: '탈모' }
-              ]},
-              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
-                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
-                { title: '염색', order: 1, using: 1, description: '염색' },
-                { title: '파마', order: 2, using: 1, description: '파마' }
+              { '#id': 'c6', title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', forums: [
+                { title: '스타일링', order: 0, using: 1, description: '스타일링', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', category_id: '#ref{c6.id}' },
+                { title: '염색', order: 1, using: 1, description: '염색', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', category_id: '#ref{c6.id}' },
+                { title: '파마', order: 2, using: 1, description: '파마', club_id: '#ref{club1.id}', club_category_group_id: '#ref{cg3.id}', category_id: '#ref{c6.id}' }
               ]}
             ]}
           ]},
-          { title: '탈모', order: 0, using: 1, description: '탈모', category_groups: [
-            { title: '헤어', order: 0, using: 1, description: '헤어', categories: [
-              { title: '탈모케어', order: 0, using: 1, description: '헤어케어', forums: [
-                { title: '샴푸/린스', order: 0, using: 1, description: '샴푸/린스', prefixes: [
+          { '#id': 'club2', title: '음악', order: 0, using: 1, description: '음악', category_groups: [
+            { '#id': 'cg2', title: '장르', order: 0, using: 1, description: '헤어', club_id: '#ref{club2.id}', categories: [
+              { '#id': 'c3', title: '인디', order: 0, using: 1, description: '헤어케어', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', forums: [
+                { title: '새로운 음악', order: 0, using: 1, description: '샴푸/린스', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', category_id: '#ref{c3.id}', prefixes: [
                   { name: '기능성 샴푸' },
                   { name: '한방 샴푸' }
                 ] },
-                { title: '트리트먼트/에센스', order: 1, using: 1, description: '트리트먼스/에센스' },
-                { title: '탈모', order: 2, using: 1, description: '탈모' }
+                { title: '추천 밴드', order: 1, using: 1, description: '트리트먼스/에센스', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', category_id: '#ref{c3.id}',  },
+                { title: '지역 모임', order: 2, using: 1, description: '탈모', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', category_id: '#ref{c3.id}' }
               ]},
-              { title: '헤어스타일링', order: 1, using: 1, description: '헤어스타일링', forums: [
-                { title: '스타일링', order: 0, using: 1, description: '스타일링' },
-                { title: '염색', order: 1, using: 1, description: '염색' },
-                { title: '파마', order: 2, using: 1, description: '파마' }
-              ]}
-            ]},
-            { title: '가발', order: 1, using: 1, description: '바디', categories: [
-              { title: '탈모영양제', order: 0, using: 1, description: '바디케어', forums: [
-                { title: '바디워시', order: 0, using: 1, description: '바디워시' },
-                { title: '청결제', order: 1, using: 1, description: '청결제' },
-                { title: '입욕제', order: 2, using: 1, description: '입욕제' },
-                { title: '제모용품', order: 3, using: 1, description: '제모용품' },
-                { title: '데오드란트', order: 4, using: 1, description: '데오드란트' },
-                { title: '태닝용품', order: 5, using: 1, description: '태닝용품' }
-              ]},
-              { title: '바디로션/핸드크림', order: 1, using: 1, description: '바디로션/핸드크림', forums: [
-                { title: '바디로션', order: 0, using: 1, description: '바디로션' },
-                { title: '핸드풋케어', order: 1, using: 1, description: '핸드풋케어' },
-                { title: '립케어', order: 2, using: 1, description: '립케어' }
-              ]},
-              { title: '세면', order: 2, using: 1, description: '세면', forums: [
-                { title: '면도용품', order: 0, using: 1, description: '면도' },
-                { title: '칫솔', order: 1, using: 1, description: '칫솔' },
-                { title: '비누', order: 2, using: 1, description: '비누' }
+              { '#id': 'c4', title: '가요', order: 1, using: 1, description: '헤어스타일링', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', forums: [
+                { title: 'K-POP', order: 0, using: 1, description: '스타일링', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', category_id: '#ref{c4.id}' },
+                { title: 'R&B', order: 1, using: 1, description: '염색', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', category_id: '#ref{c4.id}' },
+                { title: '나가수', order: 2, using: 1, description: '파마', club_id: '#ref{club2.id}', club_category_group_id: '#ref{cg2.id}', category_id: '#ref{c4.id}' }
               ]}
             ]}
           ]}
