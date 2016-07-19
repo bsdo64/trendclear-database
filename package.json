@@ -10,11 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^0.8.7",
-    "bluebird": "^3.3.5",
     "knex": "^0.11.7",
     "lodash": "^4.13.1",
     "objection": "^0.5.4",
-    "pg": "^4.5.3",
     "shortid": "^2.2.6"
   }
 }
