@@ -80,7 +80,14 @@ class tc_users extends Model {
           to: 'tc_user_skills.user_id'
         }
       },
-      // skill_logs: {},
+      skill_logs: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_skill_logs',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_skill_logs.user_id'
+        }
+      },
       grade: {
         relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_user_grades',

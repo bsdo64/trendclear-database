@@ -14,13 +14,29 @@ class tc_user_skill_logs extends Model {
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['email', 'nick', 'uid']
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_user_skill_logs.user_id',
+          to: 'tc_users.id'
+        }
+      },
+      skill: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_user_skills',
+        join: {
+          from: 'tc_user_skill_logs.skill_id',
+          to: 'tc_user_skills.id'
+        }
+      },
+    };
   }
 
   fullName() {
