@@ -54,13 +54,13 @@ exports.seed = function(knex, Promise) {
   )
     .then(function () {
       return ([
-        M.tc_roles.query().insert([
+        knex.batchInsert('tc_roles', [
           {name: '회원'},
           {name: '개발자'}
         ]),
 
         // Inserts seed entries
-        M.tc_grades.query().insert([
+        knex.batchInsert('tc_grades', [
           {name: '없음'},
           {name: '브론즈', img: 'grade_bronze.png'},
           {name: '실버', img: 'grade_silver.png'},
@@ -69,9 +69,9 @@ exports.seed = function(knex, Promise) {
           {name: '다이아몬드', img: 'grade_dia.png'}
         ]),
 
-        M.tc_icons.query().insert([
-          {icon_img: 'icon_1.png', type: 'default', created_at: new Date()}
-        ]),
+        M.tc_icons.query().insert({
+          icon_img: 'icon_1.png', type: 'default', created_at: new Date()
+        }),
 
         // Inserts seed entries
         M.tc_users.query().insertWithRelated({
@@ -91,7 +91,7 @@ exports.seed = function(knex, Promise) {
           },
         }).first(),
 
-        M.tc_skills.query().insert([
+        knex.batchInsert('tc_skills', [
           {title: '글쓰기', name: 'write_post', img: 'skill_0.jpg', description: '새로운 글을 등록할 수 있습니다.'},
           {title: '댓글쓰기', name: 'write_comment', img: 'skill_1.jpg', description: '새로운 댓글을 등록 할 수 있습니다.'},
           {title: '대댓글쓰기', name: 'write_sub_comment', img: 'skill_2.jpg', description: '새로운 대댓글을 달 수 있습니다.'},
@@ -118,13 +118,11 @@ exports.seed = function(knex, Promise) {
             .insert({icon_id: icon.id, keeping_at: new Date()})
         })
         .then(function() {
-          return user
-            .$relatedQuery('skills')
-            .insert([
-              {level: 1, skill_id: skills[0].id},
-              {level: 1, skill_id: skills[1].id},
-              {level: 1, skill_id: skills[2].id},
-            ])
+          return knex.batchInsert('tc_user_skills', [
+            {level: 1, skill_id: skills[0].id, user_id: user.id},
+            {level: 1, skill_id: skills[1].id, user_id: user.id},
+            {level: 1, skill_id: skills[2].id, user_id: user.id},
+          ])
         })
         .then(function() {
           let queryArray = [];
@@ -211,10 +209,8 @@ exports.seed = function(knex, Promise) {
           .eager('[category.category_group.club]')
           .where({title: '샴푸1/린스'})
           .first(),
-        M
-          .tc_tags
-          .query()
-          .insert([
+        knex
+          .batchInsert('tc_tags', [
             {name: 'Hello'},
             {name: 'world'},
             {name: 'this'}
@@ -250,12 +246,11 @@ exports.seed = function(knex, Promise) {
         })
         .then(function (post) {
           p = post;
-          return post
-            .$relatedQuery('tags')
-            .relate([
-              tags[0].id,
-              tags[1].id,
-              tags[2].id,
+          return knex
+            .batchInsert('tc_post_has_tags', [
+              {tag_id: tags[0].id, post_id: post.id},
+              {tag_id: tags[1].id, post_id: post.id},
+              {tag_id: tags[2].id, post_id: post.id}
             ])
         })
         .then(function (tags) {
