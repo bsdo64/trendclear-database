@@ -13,3 +13,4 @@ Model.knex(knex);
 
 module.exports.Models = require('./Models/index');
 module.exports.knex = knex;
+module.exports.connectionConfig = require('./knexfile')[env];

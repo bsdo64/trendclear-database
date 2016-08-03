@@ -3,7 +3,7 @@
 module.exports = {
 
   development: {
-    client: 'mysql',
+    client: 'postgresql',
     connection: {
       database: 'venacle_dev',
       user:     'venacle',
@@ -14,7 +14,7 @@ module.exports = {
   },
 
   staging: {
-    client: 'mysql',
+    client: 'postgresql',
     connection: {
       database: 'venacle',
       user:     'venacle',
@@ -30,7 +30,7 @@ module.exports = {
   },
 
   production: {
-    client: 'mysql',
+    client: 'postgresql',
     connection: {
       database: 'venacle',
       user:     'venacle',
