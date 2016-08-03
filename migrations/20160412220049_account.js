@@ -21,6 +21,7 @@ exports.up = (knex, Promise) => {
       table.string('uid').unique().notNullable();
       table.string('email').unique().notNullable();
       table.string('nick').unique().notNullable();
+      table.timestamps();
     })
 
     /**
@@ -31,15 +32,15 @@ exports.up = (knex, Promise) => {
       table.increments('id').primary();
       table.string('password').notNullable();
 
-      table.integer('user_id').unique().references('tc_users.id');
+      table.integer('user_id').unsigned().references('id').inTable('tc_users');
     })
 
     .createTable('tc_user_password_change_logs', (table) => {
       table.increments('id').primary();
-      table.timestamp('changed_at');
+      table.dateTime('changed_at');
 
-      table.integer('user_id').references('tc_users.id');
-      table.integer('user_password_id').references('tc_user_passwords.id');
+      table.integer('user_id').unsigned().references('id').inTable('tc_users');
+      table.integer('user_password_id').unsigned().references('id').inTable('tc_user_passwords');
     })
 
     /**
