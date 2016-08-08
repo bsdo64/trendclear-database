@@ -120,7 +120,33 @@ class tc_users extends Model {
           from: 'tc_users.id',
           to: 'tc_user_notifications.user_id'
         }
-      }
+      },
+
+      collections: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_collections',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_collections.creator'
+        }
+      },
+      follow_forums: {
+        relation: Model.ManyToManyRelation,
+          modelClass: __dirname + '/tc_user_follow_forums',
+          join: {
+          from: 'tc_users.id',
+            // ManyToMany relation needs the `through` object
+            // to describe the join table.
+            through: {
+            // If you have a model class for the join table
+            // you need to specify it like this:
+            modelClass: __dirname + '/tc_user_follow_forums',
+              from: 'tc_user_follow_forums.user_id',
+              to: 'tc_user_follow_forums.forum_id'
+          },
+          to: 'tc_forums.id'
+        }
+      },
     };
   }
 

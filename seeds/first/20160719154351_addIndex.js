@@ -3,7 +3,7 @@ const _ = require('lodash');
 const shortId = require('shortid');
 const bcrypt = require('bcrypt');
 
-let M = require('../Models/index');
+let M = require('../../Models/index');
 
 exports.seed = function(knex, Promise) {
   for (var el in M) {
