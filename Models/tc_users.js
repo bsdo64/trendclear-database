@@ -132,12 +132,12 @@ class tc_users extends Model {
       },
       follow_forums: {
         relation: Model.ManyToManyRelation,
-          modelClass: __dirname + '/tc_user_follow_forums',
+          modelClass: __dirname + '/tc_forums',
           join: {
           from: 'tc_users.id',
             // ManyToMany relation needs the `through` object
             // to describe the join table.
-            through: {
+          through: {
             // If you have a model class for the join table
             // you need to specify it like this:
             modelClass: __dirname + '/tc_user_follow_forums',
