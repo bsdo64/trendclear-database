@@ -25,30 +25,14 @@ class tc_forums extends Model {
           to: 'tc_forum_prefixes.forum_id'
         }
        },
-      club: {
+      forumOwner: {
         relation: Model.BelongsToOneRelation,
-        modelClass: __dirname + '/tc_clubs',
+        modelClass: __dirname + '/tc_users',
         join: {
-          from: 'tc_forums.club_id',
-          to: 'tc_clubs.id'
+          from: 'tc_forums.creator',
+          to: 'tc_users.id'
         }
-      },
-      category_group: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: __dirname + '/tc_club_category_groups',
-        join: {
-          from: 'tc_forums.club_category_group_id',
-          to: 'tc_club_category_groups.id'
-        }
-      },
-      category: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: __dirname + '/tc_club_categories',
-        join: {
-          from: 'tc_forums.category_id',
-          to: 'tc_club_categories.id'
-        }
-      },
+      }
     };
   }
 

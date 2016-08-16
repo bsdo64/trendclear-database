@@ -13,8 +13,7 @@ class tc_user_reports extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object',
-      required: ['email', 'nick', 'uid']
+      type: 'object'
     };
   }
 

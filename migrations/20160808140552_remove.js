@@ -20,10 +20,12 @@ exports.up = function(knex, Promise) {
       table.dropColumn('club_id');
       table.dropColumn('club_category_group_id');
       table.dropColumn('category_id');
-
-      table.integer('creator').references('tc_users.id');
+      table.dropColumn('using');
     })
-
+    .table('tc_forums', function (table) {
+      table.integer('creator').references('tc_users.id');
+      table.boolean('using').defaultTo(1);
+    })
     .table('tc_club_categories', function (table) {
       knex.raw(`ALTER TABLE public.tc_club_categories DROP CONSTRAINT tc_club_categories_club_category_group_id_foreign`);
       knex.raw(`ALTER TABLE public.tc_club_categories DROP CONSTRAINT tc_club_categories_club_id_foreign`);
