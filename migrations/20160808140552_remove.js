@@ -49,9 +49,9 @@ exports.up = function(knex, Promise) {
     .createTable('tc_collections', (table) => {
       table.increments('id').primary();
       table.string('title');
-      table.integer('order');
+      table.boolean('isPrivate');
 
-      table.integer('creator').references('tc_users.id');
+      table.integer('creator_id').references('tc_users.id');
       table.integer('parent_id').unsigned().references('id').inTable('tc_collections');
     })
     .createTable('tc_collection_forums', (table) => {
