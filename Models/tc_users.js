@@ -107,11 +107,77 @@ class tc_users extends Model {
           to: 'tc_posts.author_id'
         }
       },
-      // comments: {},
-      // sub_comments:{},
-      // likes: {},
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_comments',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_comments.author_id'
+        }
+      },
+      subComments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_sub_comments',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_sub_comments.author_id'
+        }
+      },
+      postLikes: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_likes',
+        filter: {type: 'post'},
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_likes.liker_id'
+        }
+      },
+      commentLikes: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_likes',
+        filter: {type: 'comment'},
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_likes.liker_id'
+        }
+      },
+      subCommentLikes: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_likes',
+        filter: {type: 'sub_comment'},
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_likes.liker_id'
+        }
+      },
       // scraps: {},
-      // reports: {},
+      reportPost: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_reports',
+        filter: {type: 'post'},
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_reports.reporter_id'
+        }
+      },
+      reportComment: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_reports',
+        filter: {type: 'comment'},
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_reports.reporter_id'
+        }
+      },
+      reportSubComment: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_reports',
+        filter: {type: 'subComment'},
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_reports.reporter_id'
+        }
+      },
 
       notifications: {
         relation: Model.HasManyRelation,
@@ -131,22 +197,21 @@ class tc_users extends Model {
         }
       },
       follow_forums: {
-        relation: Model.ManyToManyRelation,
-          modelClass: __dirname + '/tc_user_follow_forums',
-          join: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_follow_forums',
+        join: {
           from: 'tc_users.id',
-            // ManyToMany relation needs the `through` object
-            // to describe the join table.
-            through: {
-            // If you have a model class for the join table
-            // you need to specify it like this:
-            modelClass: __dirname + '/tc_user_follow_forums',
-              from: 'tc_user_follow_forums.user_id',
-              to: 'tc_user_follow_forums.forum_id'
-          },
-          to: 'tc_forums.id'
+          to: 'tc_user_follow_forums.user_id'
         }
       },
+      forumCreated: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_forums',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_forums.creator'
+        }
+      }
     };
   }
 

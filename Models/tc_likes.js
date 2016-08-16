@@ -13,7 +13,8 @@ class tc_likes extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object'
+      type: 'object',
+      required: ['type', 'type_id', 'liker_id']
     };
   }
 
