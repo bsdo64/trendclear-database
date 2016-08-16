@@ -193,7 +193,7 @@ class tc_users extends Model {
         modelClass: __dirname + '/tc_collections',
         join: {
           from: 'tc_users.id',
-          to: 'tc_collections.creator'
+          to: 'tc_collections.creator_id'
         }
       },
       follow_forums: {
@@ -209,7 +209,7 @@ class tc_users extends Model {
         modelClass: __dirname + '/tc_forums',
         join: {
           from: 'tc_users.id',
-          to: 'tc_forums.creator'
+          to: 'tc_forums.creator_id'
         }
       }
     };

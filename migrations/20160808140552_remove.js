@@ -23,7 +23,7 @@ exports.up = function(knex, Promise) {
       table.dropColumn('using');
     })
     .table('tc_forums', function (table) {
-      table.integer('creator').references('tc_users.id');
+      table.integer('creator_id').references('tc_users.id');
       table.boolean('using').defaultTo(1);
     })
     .table('tc_club_categories', function (table) {

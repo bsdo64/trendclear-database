@@ -8,6 +8,7 @@ chai.should();
 const {
   userObj,
   passwordObj,
+  roleObj,
   userProfileObj,
   iconObj,
   trendboxObj,
@@ -21,13 +22,15 @@ const {
   subCommentsObj,
   notificationsObj,
   collectionsObj,
-  follow_forumsObj,
+  forumObj,
   reportPostObj,
   reportCommentObj,
   reportSubCommentObj,
   forumCreatedObj
 } = require('./testData');
 
+
+const testObj = {};
 describe('DB Models - tc_users', function() {
 
   it("tc_users should return users", done => {
@@ -49,11 +52,7 @@ describe('DB Models - tc_users', function() {
   before(done => {
     "use strict";
 
-    const userObj = {
-      email: 'test@test.co.kr',
-      nick: 'test',
-      uid: shortId.generate()
-    };
+    userObj.uid = shortId.generate();
 
     Db
       .tc_users
@@ -68,6 +67,7 @@ describe('DB Models - tc_users', function() {
             .delete()
             .where({email: userObj.email})
             .then(() => {
+              testObj.user = user;
               done();
             })
         } else {
@@ -79,6 +79,7 @@ describe('DB Models - tc_users', function() {
               user.email.should.equal(userObj.email);
               user.nick.should.equal(userObj.nick);
 
+              testObj.user = user;
               done();
             });
         }
@@ -90,16 +91,11 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate password', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('password')
-            .insert(passwordObj)
-        })
+
+      testObj
+        .user
+        .$relatedQuery('password')
+        .insert(passwordObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -108,6 +104,7 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should eager password', done => {
       "use strict";
+
       Db
         .tc_users
         .query()
@@ -122,16 +119,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete password', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('password')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('password')
+        .delete()
         .then(() => {
           done();
         })
@@ -140,23 +131,29 @@ describe('DB Models - tc_users', function() {
 
   describe('tc_user > role', () => {
 
+    it('create test role', done => {
+      "use strict";
+
+      Db
+        .tc_roles
+        .query()
+        .insert(roleObj)
+        .then(result => {
+          testObj.role = result;
+          done();
+        })
+    });
 
     it('tc_user should relate role', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('role')
-            .insert({
-              role_id: 1
-            })
+      testObj
+        .user
+        .$relatedQuery('role')
+        .insert({
+          role_id: testObj.role.id
         })
         .then(result => {
-          result.role_id.should.equal(1);
+          result.should.be.a('object');
           done();
         })
     });
@@ -177,15 +174,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete role', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('role')
-            .delete()
+      testObj
+        .user
+        .$relatedQuery('role')
+        .delete()
+        .then(() => {
+          return testObj.role.$query().delete()
         })
         .then(() => {
           done();
@@ -198,16 +192,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate profile', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('profile')
-            .insert(userProfileObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('profile')
+        .insert(userProfileObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -230,16 +218,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete profile', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('profile')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('profile')
+        .delete()
         .then(() => {
           done();
         })
@@ -248,17 +230,27 @@ describe('DB Models - tc_users', function() {
 
   describe('tc_user > icon', () => {
 
+    it('create test icon', done => {
+      "use strict";
+
+      Db
+        .tc_icons
+        .query()
+        .insert(iconObj)
+        .then(result => {
+          testObj.icon = result;
+          done();
+        })
+    });
+
     it('tc_user should relate icon', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('icon')
-            .insert(iconObj)
+      testObj
+        .user
+        .$relatedQuery('icon')
+        .insert({
+          icon_id: testObj.icon.id,
+          keeping_at: new Date()
         })
         .then(result => {
           result.should.be.a('object');
@@ -282,15 +274,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete icon', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('icon')
-            .delete()
+      testObj
+        .user
+        .$relatedQuery('icon')
+        .delete()
+        .then(() => {
+          return testObj.icon.$query().delete();
         })
         .then(() => {
           done();
@@ -302,16 +291,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate trendbox', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('trendbox')
-            .insert(trendboxObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('trendbox')
+        .insert(trendboxObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -334,16 +317,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete trendbox', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('trendbox')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('trendbox')
+        .delete()
         .then(() => {
           done();
         })
@@ -352,17 +329,28 @@ describe('DB Models - tc_users', function() {
 
   describe('tc_user > skills', () => {
 
+    it('create test skill', done => {
+      "use strict";
+
+      Db
+        .tc_skills
+        .query()
+        .insert(skillsObj)
+        .then(result => {
+          testObj.skill = result;
+          done();
+        })
+    });
+
     it('tc_user should relate skills', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('skills')
-            .insert(skillsObj)
+      testObj
+        .user
+        .$relatedQuery('skills')
+        .insert({
+          skill_id: testObj.skill.id,
+          using_at: new Date(),
+          level: 1
         })
         .then(result => {
           result.should.be.a('object');
@@ -386,15 +374,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete skills', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('skills')
-            .delete()
+      testObj
+        .user
+        .$relatedQuery('skills')
+        .delete()
+        .then(() => {
+          return testObj.skill.$query().delete()
         })
         .then(() => {
           done();
@@ -404,17 +389,26 @@ describe('DB Models - tc_users', function() {
 
   describe('tc_user > grade', () => {
 
+    it('create test grade', done => {
+      "use strict";
+
+      Db
+        .tc_grades
+        .query()
+        .insert(gradeObj)
+        .then(result => {
+          testObj.grade = result;
+          done();
+        })
+    });
+
     it('tc_user should relate grade', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('grade')
-            .insert(gradeObj)
+      testObj
+        .user
+        .$relatedQuery('grade')
+        .insert({
+          grade_id: testObj.grade.id
         })
         .then(result => {
           result.should.be.a('object');
@@ -438,15 +432,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete grade', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('grade')
-            .delete()
+      testObj
+        .user
+        .$relatedQuery('grade')
+        .delete()
+        .then(() => {
+          return testObj.grade.$query().delete()
         })
         .then(() => {
           done();
@@ -458,16 +449,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate posts', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('posts')
-            .insert(postsObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('posts')
+        .insert(postsObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -490,16 +475,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete posts', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('posts')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('posts')
+        .delete()
         .then(() => {
           done();
         })
@@ -510,18 +489,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate postLikes', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          postLikesObj.liker_id = user.id;
+      postLikesObj.liker_id = testObj.user.id;
 
-          return user
-            .$relatedQuery('postLikes')
-            .insert(postLikesObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('postLikes')
+        .insert(postLikesObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -544,16 +517,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete postLikes', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('postLikes')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('postLikes')
+        .delete()
         .then(() => {
           done();
         })
@@ -564,16 +531,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate comments', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('comments')
-            .insert(commentsObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('comments')
+        .insert(commentsObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -596,16 +557,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete comments', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('comments')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('comments')
+        .delete()
         .then(() => {
           done();
         })
@@ -616,18 +571,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate commentLikes', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          commentLikesObj.liker_id = user.id;
+      commentLikesObj.liker_id = testObj.user.id;
 
-          return user
-            .$relatedQuery('commentLikes')
-            .insert(commentLikesObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('commentLikes')
+        .insert(commentLikesObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -650,16 +599,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete commentLikes', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('commentLikes')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('commentLikes')
+        .delete()
         .then(() => {
           done();
         })
@@ -670,16 +613,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate subComments', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('subComments')
-            .insert(subCommentsObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('subComments')
+        .insert(subCommentsObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -702,16 +639,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete subComments', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('subComments')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('subComments')
+        .delete()
         .then(() => {
           done();
         })
@@ -722,18 +653,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate subCommentLikes', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          subCommentLikesObj.liker_id = user.id;
+      subCommentLikesObj.liker_id = testObj.user.id;
 
-          return user
-            .$relatedQuery('subCommentLikes')
-            .insert(subCommentLikesObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('subCommentLikes')
+        .insert(subCommentLikesObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -756,16 +681,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete subCommentLikes', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('subCommentLikes')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('subCommentLikes')
+        .delete()
         .then(() => {
           done();
         })
@@ -776,16 +695,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate notifications', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('notifications')
-            .insert(notificationsObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('notifications')
+        .insert(notificationsObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -808,16 +721,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete notifications', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('notifications')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('notifications')
+        .delete()
         .then(() => {
           done();
         })
@@ -828,16 +735,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate collections', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('collections')
-            .insert(collectionsObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('collections')
+        .insert(collectionsObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -860,16 +761,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete collections', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('collections')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('collections')
+        .delete()
         .then(() => {
           done();
         })
@@ -878,17 +773,26 @@ describe('DB Models - tc_users', function() {
 
   describe('tc_user > follow_forums', () => {
 
+    it('create test forum', done => {
+      "use strict";
+
+      Db
+        .tc_forums
+        .query()
+        .insert(forumObj)
+        .then(result => {
+          testObj.forum = result;
+          done();
+        })
+    });
+
     it('tc_user should relate follow_forums', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('follow_forums')
-            .insert(follow_forumsObj)
+      testObj
+        .user
+        .$relatedQuery('follow_forums')
+        .insert({
+          forum_id: testObj.forum.id
         })
         .then(result => {
           result.should.be.a('object');
@@ -912,15 +816,12 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete follow_forums', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('follow_forums')
-            .delete()
+      testObj
+        .user
+        .$relatedQuery('follow_forums')
+        .delete()
+        .then(() => {
+          return testObj.forum.$query().delete()
         })
         .then(() => {
           done();
@@ -932,16 +833,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate reportPost', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('reportPost')
-            .insert(reportPostObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('reportPost')
+        .insert(reportPostObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -964,16 +859,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete reportPost', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('reportPost')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('reportPost')
+        .delete()
         .then(() => {
           done();
         })
@@ -984,16 +873,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate reportComment', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('reportComment')
-            .insert(reportCommentObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('reportComment')
+        .insert(reportCommentObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -1016,16 +899,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete reportComment', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('reportComment')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('reportComment')
+        .delete()
         .then(() => {
           done();
         })
@@ -1036,16 +913,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate reportSubComment', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('reportSubComment')
-            .insert(reportSubCommentObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('reportSubComment')
+        .insert(reportSubCommentObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -1068,16 +939,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete reportSubComment', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('reportSubComment')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('reportSubComment')
+        .delete()
         .then(() => {
           done();
         })
@@ -1088,16 +953,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should relate forumCreated', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('forumCreated')
-            .insert(forumCreatedObj)
-        })
+      testObj
+        .user
+        .$relatedQuery('forumCreated')
+        .insert(forumCreatedObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -1120,16 +979,10 @@ describe('DB Models - tc_users', function() {
 
     it('tc_user should delete forumCreated', done => {
       "use strict";
-      Db
-        .tc_users
-        .query()
-        .where(userObj)
-        .first()
-        .then(user => {
-          return user
-            .$relatedQuery('forumCreated')
-            .delete()
-        })
+      testObj
+        .user
+        .$relatedQuery('forumCreated')
+        .delete()
         .then(() => {
           done();
         })

@@ -51,15 +51,18 @@ describe('DB Models - tc_forums', function() {
             })
         } else {
           Db
-            .tc_forums
+            .tc_users
             .query()
-            .insert(forumObj)
-            .then(forum => {
-              forum.title.should.equal(forumObj.title);
-              forum.description.should.equal(forumObj.description);
-
-              done();
-            });
+            .where({id: 2})
+            .first()
+            .then(user => {
+              return user
+                .$relatedQuery('forumCreated')
+                .insert(forumObj)
+                .then(() => {
+                  done();
+                })
+            })
         }
       })
   });
@@ -116,9 +119,9 @@ describe('DB Models - tc_forums', function() {
     })
   });
 
-  describe('tc_forum > forumOwner', () => {
+  describe('tc_forum > creator', () => {
 
-    it('tc_forum should relate forumOwner', done => {
+    it('tc_forum should relate creator', done => {
       "use strict";
       Db
         .tc_forums
@@ -127,7 +130,7 @@ describe('DB Models - tc_forums', function() {
         .first()
         .then(forum => {
           return forum
-            .$relatedQuery('forumOwner')
+            .$relatedQuery('creator')
             .first()
         })
         .then(result => {
@@ -136,16 +139,16 @@ describe('DB Models - tc_forums', function() {
         })
     });
 
-    it('tc_forum should eager forumOwner', done => {
+    it('tc_forum should eager creator', done => {
       "use strict";
       Db
         .tc_forums
         .query()
         .where(forumObj)
-        .eager('forumOwner')
+        .eager('creator')
         .first()
         .then(result => {
-          result.should.have.property('forumOwner');
+          result.should.have.property('creator');
           done();
         })
     });

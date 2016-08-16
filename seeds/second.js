@@ -18,7 +18,7 @@ exports.seed = function(knex, Promise) {
       return Db
         .tc_forums
         .query()
-        .patch({creator: admin.id})
+        .patch({creator_id: admin.id})
     })
     .then(() => {
      return Db

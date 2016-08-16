@@ -8,30 +8,36 @@ module.exports = {
   passwordObj: {
     password: 'abcd'
   },
+  roleObj: {
+    name: 'test'
+  },
   userProfileObj: {
     sex: true,
     birth: '2016-08-14T10:23:45.683Z',
     joined_at: '2016-08-14T10:23:45.683Z'
   },
-  iconObj               : {
-    keeping_at: '2016-08-14T10:23:45.683Z',
-    icon_id: 1
+  iconObj: {
+    icon_img: '',
+    type: 'default',
+    created_at: '2016-08-14T10:23:45.683Z'
   },
   trendboxObj        : {
     level: 1
   },
   skillsObj          : {
-    level: 1,
-    skill_id: 1
+    title: 'test',
+    name: 'write_test',
+    img: 'test',
+    description: 'test'
   },
   gradeObj           : {
-    grade_id: 1
+    name: 'test',
+    img: 'test'
   },
   postsObj           : {
     title: 'hello',
     content: 'world',
-    created_at: '2016-08-14T10:23:45.683Z',
-    forum_id: 1
+    created_at: '2016-08-14T10:23:45.683Z'
   },
   postLikesObj       : {
     type: 'post',
@@ -39,8 +45,7 @@ module.exports = {
   },
   commentsObj        : {
     content: 'world',
-    created_at: '2016-08-14T10:23:45.683Z',
-    post_id: 1
+    created_at: '2016-08-14T10:23:45.683Z'
   },
   commentLikesObj    : {
     type: 'comment',
@@ -52,8 +57,7 @@ module.exports = {
   },
   subCommentsObj     : {
     content: 'world',
-    created_at: '2016-08-14T10:23:45.683Z',
-    comment_id: 1
+    created_at: '2016-08-14T10:23:45.683Z'
   },
   notificationsObj   : {
     type: 'comment_write',
@@ -61,9 +65,6 @@ module.exports = {
   },
   collectionsObj     : {
     title: 'hello'
-  },
-  follow_forumsObj   : {
-    forum_id: 1
   },
   reportPostObj      : {
     type       : 'post',
@@ -99,8 +100,7 @@ module.exports = {
     title: 'test',
     using: true,
     order: 1,
-    description: 'test',
-    creator: 1
+    description: 'test'
   },
   prefixesObj: {
     name: 'test'

@@ -6,6 +6,7 @@ chai.should();
 
 // Constant
 const {
+  userObj,
   postsObj,
   tagsObj,
   prefixesObj,
@@ -13,6 +14,7 @@ const {
   postLikesObj
 } = require('./testData');
 
+const testObj = {};
 describe('DB Models - tc_posts', function() {
 
   it("tc_posts should return posts", done => {
@@ -42,14 +44,8 @@ describe('DB Models - tc_posts', function() {
       .first()
       .then(post => {
         if (post) {
-          Db
-            .tc_posts
-            .query()
-            .delete()
-            .where({title: postsObj.title})
-            .then(() => {
-              done();
-            })
+          testObj.post = post;
+          done();
         } else {
           Db
             .tc_posts
@@ -59,6 +55,7 @@ describe('DB Models - tc_posts', function() {
               post.title.should.equal(postsObj.title);
               post.content.should.equal(postsObj.content);
 
+              testObj.post = post;
               done();
             });
         }
@@ -69,16 +66,10 @@ describe('DB Models - tc_posts', function() {
 
     it('tc_post should relate tags', done => {
       "use strict";
-      Db
-        .tc_posts
-        .query()
-        .where(postsObj)
-        .first()
-        .then(post => {
-          return post
-            .$relatedQuery('tags')
-            .insert(tagsObj)
-        })
+      testObj
+        .post
+        .$relatedQuery('tags')
+        .insert(tagsObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -101,17 +92,11 @@ describe('DB Models - tc_posts', function() {
 
     it('tc_post should unrelate tags', done => {
       "use strict";
-      Db
-        .tc_posts
-        .query()
-        .where(postsObj)
-        .first()
-        .then(result => {
-          return result
-            .$relatedQuery('tags')
-            .unrelate()
-            .where('name', tagsObj.name)
-        })
+      testObj
+        .post
+        .$relatedQuery('tags')
+        .unrelate()
+        .where('name', tagsObj.name)
         .then(() => {
           return Db
             .tc_tags
@@ -129,16 +114,10 @@ describe('DB Models - tc_posts', function() {
 
     it('tc_post should relate prefixes', done => {
       "use strict";
-      Db
-        .tc_posts
-        .query()
-        .where(postsObj)
-        .first()
-        .then(post => {
-          return post
-            .$relatedQuery('prefix')
-            .insert(prefixesObj)
-        })
+      testObj
+        .post
+        .$relatedQuery('prefix')
+        .insert(prefixesObj)
         .then(result => {
           result.should.be.a('object');
           done();
@@ -196,7 +175,7 @@ describe('DB Models - tc_posts', function() {
         .then(post => {
           return post
             .$relatedQuery('forum')
-            .relate({id: 1})
+            .relate({id: 13})
         })
         .then(result => {
           result.should.be.a('object');
@@ -232,7 +211,7 @@ describe('DB Models - tc_posts', function() {
         .then(post => {
           return post
             .$relatedQuery('author')
-            .relate({id: 1})
+            .relate({id: 2})
         })
         .then(result => {
           result.should.be.a('object');
@@ -256,7 +235,7 @@ describe('DB Models - tc_posts', function() {
 
   });
 
-  describe('tc_forum > comments', () => {
+  describe('tc_post > comments', () => {
 
     it('tc_post should relate comments', done => {
       "use strict";
@@ -308,7 +287,19 @@ describe('DB Models - tc_posts', function() {
     })
   });
 
-  describe('tc_forum > likes', () => {
+  describe('tc_post > likes', () => {
+
+    it('create test user', done => {
+      userObj.uid = shortId.generate();
+      Db
+        .tc_users
+        .query()
+        .insert(userObj)
+        .then(user => {
+          testObj.user = user;
+          done();
+        })
+    });
 
     it('tc_post should relate likes', done => {
       "use strict";
@@ -318,7 +309,7 @@ describe('DB Models - tc_posts', function() {
         .where(postsObj)
         .first()
         .then(forum => {
-          postLikesObj.liker_id = 1;
+          postLikesObj.liker_id = testObj.user.id;
 
           return forum
             .$relatedQuery('likes')
@@ -355,6 +346,9 @@ describe('DB Models - tc_posts', function() {
           return post
             .$relatedQuery('likes')
             .delete()
+        })
+        .then(() => {
+          return testObj.user.$query().delete();
         })
         .then(() => {
           done();

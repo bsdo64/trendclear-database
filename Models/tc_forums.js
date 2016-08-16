@@ -25,14 +25,22 @@ class tc_forums extends Model {
           to: 'tc_forum_prefixes.forum_id'
         }
        },
-      forumOwner: {
+      creator: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
         join: {
-          from: 'tc_forums.creator',
+          from: 'tc_forums.creator_id',
           to: 'tc_users.id'
         }
-      }
+      },
+      posts: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_forums.id',
+          to: 'tc_posts.forum_id'
+        }
+      },
     };
   }
 
