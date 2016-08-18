@@ -25,6 +25,8 @@ exports.up = function(knex, Promise) {
     .table('tc_forums', function (table) {
       table.integer('creator_id').references('tc_users.id');
       table.boolean('using').defaultTo(1);
+      table.string('sub_header');
+      table.text('rule');
     })
     .table('tc_club_categories', function (table) {
       knex.raw(`ALTER TABLE public.tc_club_categories DROP CONSTRAINT tc_club_categories_club_category_group_id_foreign`);
@@ -101,7 +103,9 @@ exports.down = function(knex, Promise) {
       table.integer('category_id').references('tc_club_categories.id');
 
       knex.raw(`ALTER TABLE public.tc_forums DROP CONSTRAINT tc_forums_creator_foreign`);
-      table.dropColumn('creator');
+      table.dropColumn('creator_id');
+      table.dropColumn('sub_header');
+      table.dropColumn('rule');
     })
     .table('tc_posts', function (table) {
       table.integer('club_id').references('tc_clubs.id');
