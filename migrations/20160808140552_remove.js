@@ -20,13 +20,41 @@ exports.up = function(knex, Promise) {
       table.dropColumn('club_id');
       table.dropColumn('club_category_group_id');
       table.dropColumn('category_id');
-      table.dropColumn('using');
     })
     .table('tc_forums', function (table) {
-      table.integer('creator_id').references('tc_users.id');
-      table.boolean('using').defaultTo(1);
-      table.string('sub_header');
-      table.text('rule');
+      const hasSubHeaderPromise = knex.schema.hasColumn('tc_forums', 'sub_header');
+      const hasRulePromise = knex.schema.hasColumn('tc_forums', 'rule');
+      const hasCreatorPromise = knex.schema.hasColumn('tc_forums', 'creator_id');
+      const hasUsingPromise = knex.schema.hasColumn('tc_forums', 'using');
+
+      Promise.join(
+        hasSubHeaderPromise,
+        hasRulePromise,
+        hasCreatorPromise,
+        hasUsingPromise,
+        function (hasSubHeader, hasRule, hasCreator, hasUsing) {
+          if (hasSubHeader) {
+            table.dropColumn('sub_header');
+          }
+
+          if (hasRule) {
+            table.dropColumn('rule');
+          }
+
+          if (hasCreator) {
+            table.dropColumn('creator_id');
+          }
+
+          if (hasUsing) {
+            table.dropColumn('using');
+          }
+
+          table.integer('creator_id').references('tc_users.id');
+          table.text('rule');
+          table.string('sub_header');
+          table.boolean('using').defaultTo(1);
+        }
+      );
     })
     .table('tc_club_categories', function (table) {
       knex.raw(`ALTER TABLE public.tc_club_categories DROP CONSTRAINT tc_club_categories_club_category_group_id_foreign`);
@@ -98,14 +126,36 @@ exports.down = function(knex, Promise) {
       table.integer('club_category_group_id').references('tc_club_category_groups.id');
     })
     .table('tc_forums', function (table) {
+
+      const hasSubHeaderPromise = knex.schema.hasColumn('tc_forums', 'sub_header');
+      const hasRulePromise = knex.schema.hasColumn('tc_forums', 'rule');
+      const hasCreatorPromise = knex.schema.hasColumn('tc_forums', 'creator_id');
+
       table.integer('club_id').references('tc_clubs.id');
       table.integer('club_category_group_id').references('tc_club_category_groups.id');
       table.integer('category_id').references('tc_club_categories.id');
+      table.boolean('using').defaultTo(1);
 
       knex.raw(`ALTER TABLE public.tc_forums DROP CONSTRAINT tc_forums_creator_foreign`);
-      table.dropColumn('creator_id');
-      table.dropColumn('sub_header');
-      table.dropColumn('rule');
+
+      Promise.join(
+        hasSubHeaderPromise,
+        hasRulePromise,
+        hasCreatorPromise,
+        function (hasSubHeader, hasRule, hasCreator) {
+          if (hasSubHeader) {
+            table.dropColumn('sub_header');
+          }
+
+          if (hasRule) {
+            table.dropColumn('rule');
+          }
+
+          if (hasCreator) {
+            table.dropColumn('creator_id');
+          }
+        }
+      );
     })
     .table('tc_posts', function (table) {
       table.integer('club_id').references('tc_clubs.id');
