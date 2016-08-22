@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const Db = require('../Models/index');
+const Db = require('../../Models/index');
 
 exports.seed = function(knex, Promise) {
   for (var el in Db) {
