@@ -113,7 +113,8 @@ describe('DB Models - tc_forums', function() {
             .$relatedQuery('prefixes')
             .delete()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })

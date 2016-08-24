@@ -123,7 +123,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('password')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -178,10 +179,12 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('role')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           return testObj.role.$query().delete()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -222,7 +225,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('profile')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -278,10 +282,12 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('icon')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           return testObj.icon.$query().delete();
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -321,7 +327,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('trendbox')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -378,10 +385,12 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('skills')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           return testObj.skill.$query().delete()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -436,10 +445,13 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('grade')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
+
           return testObj.grade.$query().delete()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -479,7 +491,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('posts')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -521,7 +534,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('postLikes')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -561,7 +575,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('comments')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -603,7 +618,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('commentLikes')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -643,7 +659,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('subComments')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -685,7 +702,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('subCommentLikes')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -725,7 +743,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('notifications')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -765,7 +784,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('collections')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -820,10 +840,14 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('follow_forums')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
+
           return testObj.forum.$query().delete()
         })
-        .then(() => {
+        .then(deletedItem => {
+          deletedItem.should.equals(1);
+
           done();
         })
     })
@@ -863,7 +887,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('reportPost')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -903,7 +928,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('reportComment')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -943,7 +969,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('reportSubComment')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -983,7 +1010,8 @@ describe('DB Models - tc_users', function() {
         .user
         .$relatedQuery('forumCreated')
         .delete()
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })

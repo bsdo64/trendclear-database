@@ -98,13 +98,15 @@ describe('DB Models - tc_posts', function() {
         .unrelate()
         .where('name', tagsObj.name)
         .then(() => {
+
           return Db
             .tc_tags
             .query()
             .delete()
             .where('name', tagsObj.name)
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         });
     });
@@ -150,14 +152,17 @@ describe('DB Models - tc_posts', function() {
             .$relatedQuery('prefix')
             .unrelate()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
+
           return Db
             .tc_forum_prefixes
             .query()
             .delete()
             .where('name', prefixesObj.name)
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         });
     });
@@ -281,7 +286,8 @@ describe('DB Models - tc_posts', function() {
             .$relatedQuery('comments')
             .delete()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })
@@ -347,10 +353,12 @@ describe('DB Models - tc_posts', function() {
             .$relatedQuery('likes')
             .delete()
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           return testObj.user.$query().delete();
         })
-        .then(() => {
+        .then((deletedItem) => {
+          deletedItem.should.equals(1);
           done();
         })
     })

@@ -9,6 +9,7 @@ exports.seed = function (knex, Promise) {
 
   return knex('tc_forum_categories').del()
     .then(() => knex('tc_categories').del())
+    .then(() => knex('tc_user_follow_forums').del())
     .then(function () {
 
       return Promise.all([
@@ -594,14 +595,6 @@ exports.seed = function (knex, Promise) {
         .then((f) => {
           forums = f;
 
-          for (let a in categories) {
-            console.log(categories[a])
-          }
-
-          for (let b in f) {
-            console.log(f[b])
-          }
-
           return Promise.all([
             Db.tc_forum_categories.query().insert([
               {category_id: categories[0].id, forum_id: f[0].id},
@@ -635,6 +628,28 @@ exports.seed = function (knex, Promise) {
               {category_id: categories[10].id, forum_id: f[28].id},
             ])
           ])
+        })
+        .then(() => {
+          "use strict";
+
+          return Db
+            .tc_users
+            .query()
+        })
+        .then(users => {
+          "use strict";
+
+          const query = [];
+          for (let key in users) {
+            for (let key2 in forums) {
+              query.push({user_id: users[key].id, forum_id: forums[key2].id})
+            }
+          }
+
+          return Db
+            .tc_user_follow_forums
+            .query()
+            .insert(query)
         })
     });
 };
