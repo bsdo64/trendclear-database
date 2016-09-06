@@ -20,7 +20,14 @@ class tc_user_follow_forums extends Model {
   // This object defines the relations to other models.
   static get relationMappings() {
     return {
-
+      forum: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_forums',
+        join: {
+          from: 'tc_user_follow_forums.forum_id',
+          to: 'tc_forums.id'
+        }
+      },
     };
   }
 
