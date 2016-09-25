@@ -21,6 +21,11 @@ exports.up = function(knex, Promise) {
       table.integer('forum_id').references('tc_forums.id');
       table.integer('post_id').references('tc_posts.id');
     })
+    .table('tc_forums', function (table) {
+      //table.dropColumn('name');
+      table.integer('follow_count').unsigned().defaultTo(0);
+      table.integer('subs_count').unsigned().defaultTo(0);
+    })
 };
 
 exports.down = function(knex, Promise) {
@@ -28,4 +33,8 @@ exports.down = function(knex, Promise) {
     .dropTableIfExists('tc_forum_ban_users')
     .dropTableIfExists('tc_forum_managers')
     .dropTableIfExists('tc_forum_announce_posts')
+    .table('tc_forums', function (table) {
+      table.dropColumn('follow_count');
+      table.dropColumn('subs_count');
+    })
 };
