@@ -43,7 +43,16 @@ exports.seed = function (knex, Promise) {
             .innerJoin('tc_collection_forums', 'tc_collections.id', '=', 'tc_collection_forums.collection_id')
             .groupBy('forum_id')
             .orderBy('forum_id'),
-          ((follows, subs) => {
+          Db
+            .tc_posts
+            .query()
+            .select('forum_id as id', knex.raw('count(forum_id) as post_count'))
+            .innerJoin('tc_forums', 'tc_posts.forum_id', '=', 'tc_forums.id')
+            .where('tc_posts.deleted', '=', false)
+            .groupBy('forum_id')
+            .orderBy('forum_id'),
+
+          ((follows, subs, post) => {
             const array = [];
             for (let k in follows) {
               array.push(Db.tc_forums
@@ -60,6 +69,15 @@ exports.seed = function (knex, Promise) {
                 .where({id: subs[k].id})
               )
             }
+
+            for (let k in post) {
+              array.push(Db.tc_forums
+                .query()
+                .patch({post_count: post[k].post_count})
+                .where({id: post[k].id})
+              )
+            }
+
             return Promise
               .all(array)
           })

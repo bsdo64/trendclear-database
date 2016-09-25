@@ -25,6 +25,7 @@ exports.up = function(knex, Promise) {
       //table.dropColumn('name');
       table.integer('follow_count').unsigned().defaultTo(0);
       table.integer('subs_count').unsigned().defaultTo(0);
+      table.integer('post_count').unsigned().defaultTo(0);
     })
 };
 
@@ -36,5 +37,6 @@ exports.down = function(knex, Promise) {
     .table('tc_forums', function (table) {
       table.dropColumn('follow_count');
       table.dropColumn('subs_count');
+      table.dropColumn('post_count');
     })
 };
