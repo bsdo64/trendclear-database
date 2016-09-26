@@ -27,6 +27,14 @@ class tc_user_notifications extends Model {
           from: 'tc_user_notifications.user_id',
           to: 'tc_users.id'
         }
+      },
+      from: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_user_notifications.from',
+          to: 'tc_users.id'
+        }
       }
     };
   }
