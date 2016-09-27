@@ -222,11 +222,20 @@ class tc_users extends Model {
         }
       },
       forumManaged: {
-        relation: Model.HasManyRelation,
-        modelClass: __dirname + '/tc_forum_managers',
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/tc_forums',
         join: {
           from: 'tc_users.id',
-          to: 'tc_forum_managers.user_id'
+          // ManyToMany relation needs the `through` object
+          // to describe the join table.
+          through: {
+            // If you have a model class for the join table
+            // you need to specify it like this:
+            modelClass: __dirname + '/tc_forum_managers',
+            from: 'tc_forum_managers.user_id',
+            to: 'tc_forum_managers.forum_id'
+          },
+          to: 'tc_forums.id'
         }
       }
     };
