@@ -220,6 +220,14 @@ class tc_users extends Model {
           from: 'tc_users.id',
           to: 'tc_forums.creator_id'
         }
+      },
+      forumManaged: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_forum_managers',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_forum_managers.user_id'
+        }
       }
     };
   }
