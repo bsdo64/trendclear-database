@@ -27,6 +27,50 @@ exports.up = function(knex, Promise) {
       table.integer('subs_count').unsigned().defaultTo(0);
       table.integer('post_count').unsigned().defaultTo(0);
     })
+    .table('tc_posts', function (table) {
+      table.integer('width').unsigned().defaultTo(0);
+      table.integer('height').unsigned().defaultTo(0);
+      table.string('link_id');
+    })
+    .createTableIfNotExists('tc_post_images', function (table) {
+      table.increments('id').primary();
+
+      table.text('url');
+      table.text('name');
+      table.integer('width').unsigned().defaultTo(0);
+      table.integer('height').unsigned().defaultTo(0);
+
+      table.integer('post_id').references('tc_posts.id');
+    })
+    .createTableIfNotExists('tc_post_videos', function (table) {
+      table.increments('id').primary();
+
+      table.text('url');
+      table.string('type');
+      table.text('img_src');
+      table.integer('width').unsigned().defaultTo(0);
+      table.integer('height').unsigned().defaultTo(0);
+
+      table.integer('post_id').references('tc_posts.id');
+    })
+    .createTableIfNotExists('tc_link_click_logs', function (table) {
+      table.increments('id').primary();
+      table.string('link_id').unique();
+
+      table.text('before_url');
+      table.text('target_url');
+
+      table.string('type');
+      table.integer('type_id');
+
+      table.string('browser');
+      table.string('ip');
+      table.string('os');
+      table.integer('user_id').references('tc_users.id');
+
+      table.timestamp('clicked_at');
+    })
+
 };
 
 exports.down = function(knex, Promise) {

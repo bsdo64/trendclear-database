@@ -78,6 +78,22 @@ class tc_posts extends Model {
           from: 'tc_posts.id',
           to: 'tc_likes.type_id'
         }
+      },
+      images: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_post_images',
+        join: {
+          from: 'tc_posts.id',
+          to: 'tc_post_images.post_id'
+        }
+      },
+      videos: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_post_videos',
+        join: {
+          from: 'tc_posts.id',
+          to: 'tc_post_videos.post_id'
+        }
       }
     };
   }
