@@ -63,9 +63,10 @@ exports.up = function(knex, Promise) {
       table.string('type');
       table.integer('type_id');
 
-      table.string('browser');
+      table.text('browser');
       table.string('ip');
-      table.string('os');
+      table.text('os');
+      table.text('session_id');
       table.integer('user_id').references('tc_users.id');
 
       table.timestamp('clicked_at');
@@ -78,9 +79,17 @@ exports.down = function(knex, Promise) {
     .dropTableIfExists('tc_forum_ban_users')
     .dropTableIfExists('tc_forum_managers')
     .dropTableIfExists('tc_forum_announce_posts')
+    .dropTableIfExists('tc_post_images')
+    .dropTableIfExists('tc_post_videos')
+    .dropTableIfExists('tc_link_click_logs')
     .table('tc_forums', function (table) {
       table.dropColumn('follow_count');
       table.dropColumn('subs_count');
       table.dropColumn('post_count');
+    })
+    .table('tc_posts', function (table) {
+      table.dropColumn('width');
+      table.dropColumn('height');
+      table.dropColumn('link_id');
     })
 };
