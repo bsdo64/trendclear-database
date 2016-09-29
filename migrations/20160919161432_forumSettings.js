@@ -55,7 +55,7 @@ exports.up = function(knex, Promise) {
     })
     .createTableIfNotExists('tc_link_click_logs', function (table) {
       table.increments('id').primary();
-      table.string('link_id').unique();
+      table.string('link_id');
 
       table.text('before_url');
       table.text('target_url');
