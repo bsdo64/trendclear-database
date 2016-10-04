@@ -1,4 +1,5 @@
 const Db = require('../Models/index');
+const shortId = require('shortid');
 
 exports.seed = function (knex, Promise) {
   for (var el in Db) {
@@ -51,8 +52,11 @@ exports.seed = function (knex, Promise) {
             .where('tc_posts.deleted', '=', false)
             .groupBy('forum_id')
             .orderBy('forum_id'),
+          Db
+            .tc_posts
+            .query(),
 
-          ((follows, subs, post) => {
+          ((follows, subs, post, allPost) => {
             const array = [];
             for (let k in follows) {
               array.push(Db.tc_forums
@@ -75,8 +79,16 @@ exports.seed = function (knex, Promise) {
                 .query()
                 .patch({post_count: post[k].post_count})
                 .where({id: post[k].id})
-              )
+              );
             }
+
+              for (let k in allPost) {
+                array.push(Db.tc_posts
+                  .query()
+                  .patch({link_id: shortId.generate() + new Date().getTime()})
+                  .where({id: allPost[k].id})
+                )
+              }
 
             return Promise
               .all(array)

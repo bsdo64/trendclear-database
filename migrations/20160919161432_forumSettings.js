@@ -27,6 +27,9 @@ exports.up = function(knex, Promise) {
       table.integer('subs_count').unsigned().defaultTo(0);
       table.integer('post_count').unsigned().defaultTo(0);
     })
+    .alterTable('tc_forums', function (table) {
+      table.unique('title');
+    })
     .table('tc_posts', function (table) {
       table.integer('width').unsigned().defaultTo(0);
       table.integer('height').unsigned().defaultTo(0);
@@ -71,7 +74,26 @@ exports.up = function(knex, Promise) {
 
       table.timestamp('clicked_at');
     })
+    .createTable('tc_visitors', function (table) {
+      table.increments('id').primary();
 
+      table.string('uuid').unique();
+      table.integer('user_id').references('tc_users.id');
+      table.text('session_id');
+      table.string('ip');
+
+      table.text('os');
+      table.text('browser');
+
+      table.timestamp('last_visit');
+      table.timestamp('first_visit');
+    })
+    .createTable('tc_visitor_views', function (table) {
+      table.string('type');
+      table.text('url');
+      table.string('visitor_id').references('tc_visitors.uuid');
+      table.timestamp('created_at');
+    })
 };
 
 exports.down = function(knex, Promise) {
@@ -82,10 +104,14 @@ exports.down = function(knex, Promise) {
     .dropTableIfExists('tc_post_images')
     .dropTableIfExists('tc_post_videos')
     .dropTableIfExists('tc_link_click_logs')
+    .dropTableIfExists('tc_visitor_views')
+    .dropTableIfExists('tc_visitors')
     .table('tc_forums', function (table) {
       table.dropColumn('follow_count');
       table.dropColumn('subs_count');
       table.dropColumn('post_count');
+
+      table.dropUnique('title');
     })
     .table('tc_posts', function (table) {
       table.dropColumn('width');
