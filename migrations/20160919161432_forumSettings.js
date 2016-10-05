@@ -56,28 +56,13 @@ exports.up = function(knex, Promise) {
 
       table.integer('post_id').references('tc_posts.id');
     })
-    .createTableIfNotExists('tc_link_click_logs', function (table) {
-      table.increments('id').primary();
-      table.string('link_id');
-
-      table.text('before_url');
-      table.text('target_url');
-
-      table.string('type');
-      table.integer('type_id');
-
-      table.text('browser');
-      table.string('ip');
-      table.text('os');
-      table.text('session_id');
-      table.integer('user_id').references('tc_users.id');
-
-      table.timestamp('clicked_at');
-    })
     .createTable('tc_visitors', function (table) {
       table.increments('id').primary();
 
       table.string('uuid').unique();
+    })
+    .createTable('tc_visitor_devices', function (table) {
+      table.increments('id').primary();
       table.integer('user_id').references('tc_users.id');
       table.text('session_id');
       table.string('ip');
@@ -88,10 +73,25 @@ exports.up = function(knex, Promise) {
       table.timestamp('last_visit');
       table.timestamp('first_visit');
     })
+    .createTable('tc_link_click_logs', function (table) {
+      table.increments('id').primary();
+      table.string('link_id');
+
+      table.text('before_url');
+      table.text('target_url');
+
+      table.string('type');
+      table.integer('type_id');
+
+      table.string('visitor_uid').references('tc_visitors.uuid');
+      table.integer('user_id').references('tc_users.id');
+
+      table.timestamp('clicked_at');
+    })
     .createTable('tc_visitor_views', function (table) {
       table.string('type');
       table.text('url');
-      table.string('visitor_id').references('tc_visitors.uuid');
+      table.string('visitor_uid').references('tc_visitors.uuid');
       table.timestamp('created_at');
     })
 };
@@ -105,6 +105,7 @@ exports.down = function(knex, Promise) {
     .dropTableIfExists('tc_post_videos')
     .dropTableIfExists('tc_link_click_logs')
     .dropTableIfExists('tc_visitor_views')
+    .dropTableIfExists('tc_visitor_devices')
     .dropTableIfExists('tc_visitors')
     .table('tc_forums', function (table) {
       table.dropColumn('follow_count');
