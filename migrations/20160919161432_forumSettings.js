@@ -60,10 +60,10 @@ exports.up = function(knex, Promise) {
       table.increments('id').primary();
 
       table.string('uuid').unique();
+      table.integer('user_id').references('tc_users.id');
     })
     .createTable('tc_visitor_devices', function (table) {
       table.increments('id').primary();
-      table.integer('user_id').references('tc_users.id');
       table.text('session_id');
       table.string('ip');
 
@@ -72,6 +72,8 @@ exports.up = function(knex, Promise) {
 
       table.timestamp('last_visit');
       table.timestamp('first_visit');
+
+      table.string('visitor_uid').references('tc_visitors.uuid');
     })
     .createTable('tc_link_click_logs', function (table) {
       table.increments('id').primary();
