@@ -25,7 +25,7 @@ class tc_visitor_devices extends Model {
         modelClass: __dirname + '/tc_visitors',
         join: {
           from: 'tc_visitor_devices.visitor_uid',
-          to: 'tc_visitors.id'
+          to: 'tc_visitors.uuid'
         }
       }
     };
