@@ -19,7 +19,32 @@ class tc_visitors extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      devices: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_visitor_devices',
+        join: {
+          from: 'tc_visitors.uuid',
+          to: 'tc_visitor_devices.visitor_uid'
+        }
+      },
+      pageViews: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_visitor_views',
+        join: {
+          from: 'tc_visitors.uuid',
+          to: 'tc_visitor_views.visitor_uid'
+        }
+      },
+      user: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_visitors.user_id',
+          to: 'tc_users.id'
+        }
+      }
+    };
   }
 
   fullName() {

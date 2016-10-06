@@ -19,7 +19,16 @@ class tc_visitor_views extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      visitor: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_visitors',
+        join: {
+          from: 'tc_visitor_views.visitor_uid',
+          to: 'tc_visitors.id'
+        }
+      },
+    };
   }
 
   fullName() {
