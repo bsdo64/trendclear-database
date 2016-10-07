@@ -96,10 +96,22 @@ exports.up = function(knex, Promise) {
       table.string('visitor_uid').references('tc_visitors.uuid');
       table.timestamp('created_at');
     })
+    .createTable('tc_site_values', function (table) {
+      table.increments('id').primary();
+      table.string('key');
+      table.text('value');
+      table.string('type');
+    })
 };
 
 exports.down = function(knex, Promise) {
   return knex.schema
+    .table('tc_post_views', function (table) {
+      table.dropColumn('visitor_uid');
+      table.string('user_id');
+      table.string('ip');
+    })
+    .dropTableIfExists('tc_site_values')
     .dropTableIfExists('tc_forum_ban_users')
     .dropTableIfExists('tc_forum_managers')
     .dropTableIfExists('tc_forum_announce_posts')
