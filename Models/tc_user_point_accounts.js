@@ -3,10 +3,10 @@ const Objection = require('objection');
 const QueryBuilder = Objection.QueryBuilder;
 const Model = Objection.Model;
 
-class tc_badges extends Model {
+class tc_user_point_accounts extends Model {
   // Table name is the only required property.
   static get tableName() {
-    return 'tc_badges';
+    return 'tc_user_point_accounts';
   }
 
   // Optional JSON schema. This is not the database schema! This is only used for validation.
@@ -28,4 +28,4 @@ class tc_badges extends Model {
 
 }
 
-module.exports = tc_badges;
+module.exports = tc_user_point_accounts;
