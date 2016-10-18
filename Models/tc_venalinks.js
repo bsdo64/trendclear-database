@@ -19,7 +19,24 @@ class tc_venalinks extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      post: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_venalinks.post_id',
+          to: 'tc_posts.id'
+        }
+      },
+      activate_item_log: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_venalinks.activate_item_id',
+          to: 'tc_user_inventory_logs.id'
+        }
+      },
+    };
   }
 
   fullName() {

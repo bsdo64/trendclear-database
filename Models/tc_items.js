@@ -13,13 +13,28 @@ class tc_items extends Model {
   // http://json-schema.org/.
   static get jsonSchema () {
     return {
-      type: 'object'
+      type: 'object',
+      properties: {
+        code: {type: 'string'},
+        title: {type: 'string'},
+        image: {type: 'string'},
+
+      }
     };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      attribute: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_item_attributes',
+        join: {
+          from: 'tc_items.id',
+          to: 'tc_item_attributes.item_id'
+        }
+      }
+    };
   }
 
   fullName() {

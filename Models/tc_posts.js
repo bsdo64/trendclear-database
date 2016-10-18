@@ -94,7 +94,15 @@ class tc_posts extends Model {
           from: 'tc_posts.id',
           to: 'tc_post_videos.post_id'
         }
-      }
+      },
+      venalinks: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_venalinks',
+        join: {
+          from: 'tc_posts.id',
+          to: 'tc_venalinks.post_id'
+        }
+      },
     };
   }
 
