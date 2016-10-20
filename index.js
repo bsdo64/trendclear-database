@@ -12,5 +12,6 @@ const knex = Knex(connection);
 Model.knex(knex);
 
 module.exports.Models = require('./Models/index');
+module.exports.Objection = objection;
 module.exports.knex = knex;
 module.exports.connectionConfig = require('./knexfile')[env];
