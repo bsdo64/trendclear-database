@@ -12,6 +12,7 @@ exports.up = function(knex, Promise) {
     .createTable('tc_item_attributes', function (table) {
       table.increments('id').primary();
 
+      table.string('inventory_type'); //post,
       table.string('item_type'); //post,
       table.string('purpose'); //post,
       table.string('description'); //item purchase, charge_rp, service(write post, write comment...)
@@ -89,9 +90,7 @@ exports.up = function(knex, Promise) {
     .createTable('tc_user_inventory_items', function (table) {
       table.increments('id').primary();
 
-      table.string('item_uid');
       table.integer('item_count');
-      table.integer('max_item_count');
 
       table.integer('item_id').references('tc_items.id');
       table.integer('inventory_id').references('tc_user_inventories.id');
@@ -100,12 +99,15 @@ exports.up = function(knex, Promise) {
       table.increments('id').primary();
 
       table.string('log_uid');
+      table.string('usage'); //puchase, event, used
+
+      table.string('target_type'); //post
+      table.integer('target_id'); //post_id
 
       table.integer('item_count');
       table.integer('total_item_count');
 
-      table.integer('item_id').references('tc_items.id');
-      table.integer('inventory_id').references('tc_user_inventories.id');
+      table.integer('inventory_item_id').references('tc_user_inventory_items.id');
     })
     .createTable('tc_venalinks', function (table) {
       table.increments('id').primary();

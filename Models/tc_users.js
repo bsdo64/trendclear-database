@@ -221,6 +221,14 @@ class tc_users extends Model {
           to: 'tc_forums.creator_id'
         }
       },
+      inventories: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_inventories',
+        join: {
+          from: 'tc_users.id',
+          to: 'tc_user_inventories.user_id'
+        }
+      },
       forumManaged: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/tc_forums',
