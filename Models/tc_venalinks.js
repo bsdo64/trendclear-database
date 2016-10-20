@@ -30,7 +30,7 @@ class tc_venalinks extends Model {
       },
       activate_item_log: {
         relation: Model.BelongsToOneRelation,
-        modelClass: __dirname + '/tc_posts',
+        modelClass: __dirname + '/tc_user_inventory_logs',
         join: {
           from: 'tc_venalinks.activate_item_id',
           to: 'tc_user_inventory_logs.id'

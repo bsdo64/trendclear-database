@@ -6,18 +6,14 @@ exports.seed = function(knex, Promise) {
     Db[el].knex(knex);
   }
 
-  return Promise.join(
-    // Deletes ALL existing entries
-
-    knex('tc_item_attributes').del(),
-    knex('tc_items').del(),
-    knex('tc_user_item_orders').del(),
-    knex('tc_user_inventory_logs').del(),
-    knex('tc_user_inventory_items').del(),
-    knex('tc_user_inventories').del(),
-    knex('tc_user_point_accounts').del(),
-    knex('tc_trades').del()
-  )
+  return knex('tc_item_attributes').del()
+    .then(() => knex('tc_user_inventory_logs').del())
+    .then(() => knex('tc_user_inventory_items').del())
+    .then(() => knex('tc_items').del())
+    .then(() => knex('tc_user_item_orders').del())
+    .then(() => knex('tc_user_inventories').del())
+    .then(() => knex('tc_user_point_accounts').del())
+    .then(() => knex('tc_trades').del())
     .then(function () {
 
       return Promise.all([
@@ -90,16 +86,9 @@ exports.seed = function(knex, Promise) {
 
         array.push(Db.tc_user_point_accounts.query().insert({
           type: 'initial',
-          point_type: 'TP',
+          point_type: 'Both',
           total_t: users[index].trendbox.T,
-          user_id: users[index].id,
-          created_at: new Date()
-        }));
-
-        array.push(Db.tc_user_point_accounts.query().insert({
-          type: 'initial',
-          point_type: 'RP',
-          total_t: users[index].trendbox.R,
+          total_r: users[index].trendbox.R,
           user_id: users[index].id,
           created_at: new Date()
         }));
