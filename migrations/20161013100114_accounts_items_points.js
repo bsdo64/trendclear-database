@@ -71,6 +71,8 @@ exports.up = function(knex, Promise) {
       table.integer('trade_id').references('tc_trades.id');
       table.integer('user_id').references('tc_users.id');
       table.timestamp('created_at');
+
+      table.index('created_at', 'DESC');
     })
     .createTable('tc_user_item_orders', function (table) {
       table.increments('id').primary();

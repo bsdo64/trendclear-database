@@ -19,7 +19,16 @@ class tc_user_inventory_items extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      item: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_items',
+        join: {
+          from: 'tc_user_inventory_items.item_id',
+          to: 'tc_items.id'
+        }
+      }
+    };
   }
 
   fullName() {

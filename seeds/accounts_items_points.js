@@ -11,6 +11,9 @@ exports.seed = function(knex, Promise) {
 
     knex('tc_item_attributes').del(),
     knex('tc_items').del(),
+    knex('tc_user_item_orders').del(),
+    knex('tc_user_inventory_logs').del(),
+    knex('tc_user_inventory_items').del(),
     knex('tc_user_inventories').del(),
     knex('tc_user_point_accounts').del(),
     knex('tc_trades').del()
