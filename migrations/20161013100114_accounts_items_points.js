@@ -143,7 +143,7 @@ exports.up = function(knex, Promise) {
       table.text('before_url');
       table.text('target_url');
 
-      table.string('type');
+      table.string('type');     //
       table.integer('type_id');
 
       table.string('visitor_uid').references('tc_visitors.uuid');
