@@ -7,6 +7,7 @@ exports.seed = function(knex, Promise) {
   }
 
   return knex('tc_item_attributes').del()
+    .then(() => knex('tc_user_has_venalinks').del())
     .then(() => knex('tc_venalinks').del())
     .then(() => knex('tc_user_inventory_logs').del())
     .then(() => knex('tc_user_inventory_items').del())

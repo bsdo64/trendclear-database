@@ -36,6 +36,14 @@ class tc_venalinks extends Model {
           to: 'tc_user_inventory_logs.id'
         }
       },
+      participants: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tc_user_has_venalinks',
+        join: {
+          from: 'tc_venalinks.id',
+          to: 'tc_user_has_venalinks.venalink_id'
+        }
+      }
     };
   }
 

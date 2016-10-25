@@ -122,6 +122,7 @@ exports.up = function(knex, Promise) {
 
       table.integer('post_id').references('tc_posts.id');
       table.integer('activate_item_id').references('tc_user_inventory_logs.id');
+      table.integer('user_id').references('tc_users.id');
 
       table.timestamp('active_at');
       table.timestamp('terminate_at');

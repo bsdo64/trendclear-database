@@ -19,7 +19,16 @@ class tc_user_has_venalinks extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      user: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_users',
+        join: {
+          from: 'tc_user_has_venalinks.user_id',
+          to: 'tc_users.id'
+        }
+      }
+    };
   }
 
   fullName() {
