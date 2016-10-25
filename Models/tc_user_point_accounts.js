@@ -19,7 +19,16 @@ class tc_user_point_accounts extends Model {
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {};
+    return {
+      trade: {
+        relation: Model.HasOneRelation,
+        modelClass: __dirname + '/tc_trades',
+        join: {
+          from: 'tc_user_point_accounts.trade_id',
+          to: 'tc_trades.id'
+        }
+      }
+    };
   }
 
   fullName() {
