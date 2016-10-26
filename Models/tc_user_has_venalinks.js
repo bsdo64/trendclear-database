@@ -27,6 +27,14 @@ class tc_user_has_venalinks extends Model {
           from: 'tc_user_has_venalinks.user_id',
           to: 'tc_users.id'
         }
+      },
+      venalink: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/tc_venalinks',
+        join: {
+          from: 'tc_user_has_venalinks.venalink_id',
+          to: 'tc_venalinks.id'
+        }
       }
     };
   }
