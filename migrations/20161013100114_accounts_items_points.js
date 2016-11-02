@@ -132,7 +132,7 @@ exports.up = function(knex, Promise) {
       table.increments('id').primary();
 
       table.integer('venalink_id').references('tc_venalinks.id');
-      table.string('venalink_uid');
+      table.string('venalink_uid').unique();
 
       table.integer('paid_r').defaultTo(0);
       table.integer('count_visitor').defaultTo(0);
