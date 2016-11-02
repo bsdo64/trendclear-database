@@ -119,6 +119,7 @@ exports.up = function(knex, Promise) {
       table.integer('pay_per_click_r');
       table.integer('total_pay_r');
       table.integer('total_remain_r');
+      table.integer('total_refunded_r');
 
       table.integer('post_id').references('tc_posts.id');
       table.integer('activate_item_id').references('tc_user_inventory_logs.id');
@@ -133,6 +134,8 @@ exports.up = function(knex, Promise) {
       table.integer('venalink_id').references('tc_venalinks.id');
       table.string('venalink_uid');
 
+      table.integer('paid_r').defaultTo(0);
+      table.integer('count_visitor').defaultTo(0);
       table.integer('used_venalink_item_id').references('tc_user_inventory_logs.id');
       table.integer('user_id').references('tc_users.id');
 
@@ -149,7 +152,7 @@ exports.up = function(knex, Promise) {
 
       table.string('visitor_uid').references('tc_visitors.uuid');
       table.integer('user_id').references('tc_users.id');
-      table.integer('user_venalink_id').references('tc_user_has_venalinks.id');
+      table.string('venalink_uid').references('tc_user_has_venalinks.venalink_uid');
 
       table.timestamp('clicked_at');
     })
