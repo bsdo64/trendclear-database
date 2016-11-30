@@ -134,6 +134,7 @@ exports.up = function(knex, Promise) {
       table.integer('venalink_id').references('tc_venalinks.id');
       table.string('venalink_uid').unique();
 
+      table.boolean('has_payback_rp').defaultTo(false);
       table.integer('paid_r').defaultTo(0);
       table.integer('count_visitor').defaultTo(0);
       table.integer('used_venalink_item_id').references('tc_user_inventory_logs.id');
