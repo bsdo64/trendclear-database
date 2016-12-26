@@ -1,4 +1,4 @@
-const Db = require('../Models/index');
+const Db = require('../../Models/index');
 const shortId = require('shortid');
 
 exports.seed = function(knex, Promise) {
