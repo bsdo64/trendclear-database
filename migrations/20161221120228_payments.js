@@ -33,6 +33,8 @@ exports.up = function(knex, Promise) {
       table.string('vbank_holder'); //가상계좌 예금주
       table.string('vbank_name'); //가상계좌 은행명
       table.string('vbank_num'); //가상계좌 입금계좌번호
+
+      table.integer('user_id');
     })
     .createTable('tc_payment_notis', function (table) {
       table.increments('id').primary();
