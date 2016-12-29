@@ -10,6 +10,13 @@ module.exports = {
       password: 'venacledkbs12',
       host    : '127.0.0.1',
       charset : 'utf8'
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'venacle_migrations'
     }
   },
 
