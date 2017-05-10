@@ -4,22 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -b test/Models.js test/relation"
+    "test": "mocha -b test/Models.js test/relation",
+    "seed:run": "knex seed:run"
   },
   "author": "bsdo64@gmail.com",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "co": "^4.6.0",
-    "knex": "^0.11.7",
+    "knex": "^0.13.0",
     "lodash": "^4.13.1",
     "mysql": "^2.11.1",
-    "objection": "^0.5.5",
+    "objection": "^0.7.12",
     "pg": "^6.0.2",
     "shortid": "^2.2.6"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.0.2"
-  }
+  },
+  "repository": "git@github.com:bsdo64/trendclear-database.git"
 }
