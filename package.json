@@ -10,7 +10,6 @@
   "author": "bsdo64@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^0.8.7",
     "co": "^4.6.0",
     "knex": "^0.13.0",
     "lodash": "^4.13.1",
