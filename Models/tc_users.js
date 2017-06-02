@@ -245,6 +245,21 @@ class tc_users extends Model {
           },
           to: 'tc_forums.id'
         }
+      },
+      latestSeen: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/tc_posts',
+        join: {
+          from: 'tc_users.id',
+          through: {
+            // Person_Movie is the join table.
+            modelClass: __dirname + '/tc_latest_seen',
+            from: 'tc_latest_seen.user_id',
+            to: 'tc_latest_seen.post_id',
+            extra: ['created_at']
+          },
+          to: 'tc_posts.id'
+        }
       }
     };
   }

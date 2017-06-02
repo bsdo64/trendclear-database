@@ -1018,6 +1018,111 @@ describe('DB Models - tc_users', function() {
     })
   });
 
+  describe('tc_user > latestSeen', () => {
+
+    let post, post2;
+
+    it('tc_user should create latest post', done => {
+
+      testObj
+        .user
+        .$relatedQuery('posts')
+        .insert(postsObj)
+        .then(result => {
+          post = result;
+          result.should.be.a('object');
+
+          testObj
+            .user
+            .$relatedQuery('posts')
+            .insert(postsObj)
+            .then(result => {
+              post2 = result;
+              result.should.be.a('object');
+
+              testObj
+                .user
+                .$relatedQuery('latestSeen')
+                .relate({
+                  id: post.id,
+                  created_at: new Date()
+                })
+                .then(postId => {
+                  console.log(postId);
+                  postId.should.be.a('object');
+
+                  testObj
+                    .user
+                    .$relatedQuery('latestSeen')
+                    .relate({
+                      id: post2.id,
+                      created_at: new Date()
+                    })
+                    .then(postId => {
+
+                      console.log(postId);
+
+                      postId.should.be.a('object');
+                      done();
+                    })
+                })
+            })
+        });
+    });
+
+    it('tc_user should relate latestSeen', done => {
+      Db
+        .tc_users
+        .query()
+        .where(userObj)
+        .first()
+        .eager('latestSeen')
+        .then(latestSeen => {
+
+          console.log(latestSeen);
+          latestSeen.should.have.property('latestSeen');
+          done();
+        })
+    });
+
+    it('tc_user should delete latestSeen', done => {
+      Db
+        .tc_latest_seen
+        .query()
+        .where('post_id', post.id)
+        .orWhere('post_id', post2.id)
+        .then((items) => {
+
+          console.log(items);
+
+          testObj
+            .user
+            .$relatedQuery('latestSeen')
+            .unrelate()
+            .then(() => {
+
+              Db
+                .tc_latest_seen
+                .query()
+                .where('post_id', post.id)
+                .orWhere('post_id', post2.id)
+                .then((item) => {
+                  item.length.should.equals(0);
+
+                  testObj
+                    .user
+                    .$relatedQuery('posts')
+                    .delete()
+                    .then((deletedItem) => {
+                      deletedItem.should.equals(2);
+                      done();
+                    })
+                })
+            })
+        })
+    });
+  });
+
   after((done) => {
     "use strict";
 

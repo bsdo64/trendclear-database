@@ -11,10 +11,17 @@ exports.up = function(knex, Promise) {
       table.string('query').unique();
       table.integer('query_count').defaultTo(0);
     })
+    .createTable('tc_latest_seen', function (table) {
+      table.increments('id').primary();
+      table.integer('post_id');
+      table.integer('user_id');
+      table.timestamp('created_at');
+    })
 };
 
 exports.down = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists('tc_search_logs')
     .dropTableIfExists('tc_search_ranks')
+    .dropTableIfExists('tc_lately_seen')
 };
