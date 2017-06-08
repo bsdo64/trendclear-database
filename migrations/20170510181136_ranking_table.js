@@ -17,11 +17,17 @@ exports.up = function(knex, Promise) {
       table.integer('user_id');
       table.timestamp('created_at');
     })
+    .table('tc_forums', function (table) {
+      table.string('forum_image');
+    })
 };
 
 exports.down = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists('tc_search_logs')
     .dropTableIfExists('tc_search_ranks')
-    .dropTableIfExists('tc_lately_seen')
+    .dropTableIfExists('tc_latest_seen')
+    .table('tc_forums', function (table) {
+      table.dropColumn('forum_image');
+    })
 };
