@@ -27,7 +27,13 @@ exports.down = function(knex, Promise) {
     .dropTableIfExists('tc_search_logs')
     .dropTableIfExists('tc_search_ranks')
     .dropTableIfExists('tc_latest_seen')
-    .table('tc_forums', function (table) {
-      table.dropColumn('forum_image');
+    .hasColumn('tc_forums', 'forum_image')
+    .then(result => {
+
+      if (result[result.length - 1]) {
+        return knex.schema.table('tc_forums', function (table) {
+          table.dropColumn('forum_image');
+        })
+      }
     })
 };
