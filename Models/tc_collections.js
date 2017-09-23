@@ -24,7 +24,7 @@ class tc_collections extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
         join: {
-          from: 'tc_collections.creator',
+          from: 'tc_collections.creator_id',
           to: 'tc_users.id'
         }
       },
