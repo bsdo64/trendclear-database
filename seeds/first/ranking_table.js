@@ -1,4 +1,4 @@
-const Db = require('../Models/index');
+const Db = require('../../Models/index');
 const co = require('co');
 const shortId = require('shortid');
 
