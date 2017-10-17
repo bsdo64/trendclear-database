@@ -23,6 +23,7 @@ class tc_user_has_venalinks extends Model {
       user: {
         relation: Model.HasOneRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from: 'tc_user_has_venalinks.user_id',
           to: 'tc_users.id'

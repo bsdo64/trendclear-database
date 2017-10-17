@@ -23,6 +23,7 @@ class tc_user_notifications extends Model {
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from: 'tc_user_notifications.user_id',
           to: 'tc_users.id'
@@ -30,6 +31,7 @@ class tc_user_notifications extends Model {
       },
       from: {
         relation: Model.BelongsToOneRelation,
+        filter: query => query.select('id', 'uid', 'nick'),
         modelClass: __dirname + '/tc_users',
         join: {
           from: 'tc_user_notifications.from',

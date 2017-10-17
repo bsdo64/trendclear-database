@@ -23,6 +23,7 @@ class tc_user_profiles extends Model {
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from:'tc_user_profiles.user_id',
           to: 'tc_users.id'

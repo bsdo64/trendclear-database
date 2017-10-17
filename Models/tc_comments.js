@@ -23,6 +23,7 @@ class tc_comments extends Model {
       author: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from: 'tc_comments.author_id',
           to: 'tc_users.id'

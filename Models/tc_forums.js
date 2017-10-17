@@ -20,6 +20,7 @@ class tc_forums extends Model {
       bans: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from: 'tc_forums.id',
           // ManyToMany relation needs the `through` object
@@ -37,6 +38,7 @@ class tc_forums extends Model {
       managers: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from: 'tc_forums.id',
           // ManyToMany relation needs the `through` object
@@ -79,6 +81,7 @@ class tc_forums extends Model {
       creator: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
+        filter: query => query.select('id', 'uid', 'nick'),
         join: {
           from: 'tc_forums.creator_id',
           to: 'tc_users.id'
