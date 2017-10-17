@@ -23,7 +23,7 @@ class tc_user_skill_logs extends Model {
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tc_users',
-        filter: query => query.select('id', 'uid', 'nick'),
+        filter: query => query.select('tc_users.id', 'uid', 'nick'),
         join: {
           from: 'tc_user_skill_logs.user_id',
           to: 'tc_users.id'
